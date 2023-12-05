@@ -1,5 +1,6 @@
 import { useState } from 'react';
-import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
+import { Text, View, TouchableOpacity } from 'react-native';
+import styles from './styles'
 import { StatusBar } from 'expo-status-bar';
 
 import tarotCards from './tarotCards';
@@ -51,28 +52,3 @@ export default function App() {
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'space-around',
-  },
-  shuffleButton: {
-    // Styles for the shuffle button
-  },
-  resetButton: {
-    // Styles for the reset button
-  },
-  cardGrid: {
-    flexDirection: 'row',
-    justifyContent: 'center',
-  },
-  cardContainer: {
-    // Styles for each card container
-  },
-  cardText: {
-    // Styles for the text inside each card container
-  },
-  // ... other styles
-});
