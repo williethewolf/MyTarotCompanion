@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Text, View, TouchableOpacity } from 'react-native';
 import styles from './styles'
+import { LinearGradient } from 'expo-linear-gradient';
 import { StatusBar } from 'expo-status-bar';
 
 import tarotCards from './tarotCards';
@@ -32,7 +33,14 @@ export default function App() {
   return (
     <View style={styles.container}>
       <TouchableOpacity onPress={shuffleDeck} style={styles.shuffleButton}>
-        <Text>Shuffle Deck</Text>
+      <LinearGradient
+          colors={['#9E9E9E', '#E0E0E0']} // Adjust these colors as needed
+          style={styles.shuffleButton}
+          start={{ x: 0, y: 0 }}
+          end={{ x: 1, y: 1 }}
+        >
+          <Text style={styles.shuffleButtonText}>Shuffle</Text>
+        </LinearGradient>
       </TouchableOpacity>
   
       <View style={styles.cardGrid}>
