@@ -7,12 +7,12 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'space-around',
       },
-      cardGrid: {
+    cardGrid: {
         flexDirection: 'row',
         justifyContent: 'center',
         width: '100%',
       },
-      cardContainer: {
+    cardContainer: {
         width: '25%',
         maxWidth: 100,
     },
@@ -27,3 +27,5 @@ const styles = StyleSheet.create({
     },
     // ... other styles
   });
+
+  export default styles;
