@@ -4,35 +4,58 @@ import styles from './styles'
 import { LinearGradient } from 'expo-linear-gradient';
 import { StatusBar } from 'expo-status-bar';
 
+import EmptyDeckAnimatedText from './emptyDeckAnimatedText';
+
 import tarotCards from './tarotCards';
 
 export default function App() {
+  const [currentDeck, setCurrentDeck] = useState([...tarotCards]);
   const [drawnCards, setDrawnCards] = useState([]);
+  const [isDeckEmpty, setIsDeckEmpty] = useState(false);
+  const [showEmptyDeckMessage, setShowEmptyDeckMessage] = useState(false);
 
-  const shuffleDeck = () => {
-    // Shuffle the tarotCards array
-    for (let i = tarotCards.length - 1; i > 0; i--) {
-      const j = Math.floor(Math.random() * (i + 1));
-      [tarotCards[i], tarotCards[j]] = [tarotCards[j], tarotCards[i]];
+  const shuffleDeck = (deck) => {
+    if (!Array.isArray(deck)) {
+      console.error('shuffleDeck was called without a valid deck array');
+      return;
     }
+  
+    let shuffledDeck = [...deck];
+    for (let i = shuffledDeck.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [shuffledDeck[i], shuffledDeck[j]] = [shuffledDeck[j], shuffledDeck[i]];
+    }
+    setCurrentDeck(shuffledDeck);
   };
 
   const drawCard = (index) => {
-    const card = tarotCards.shift();
+    if (currentDeck.length === 0) {
+      setIsDeckEmpty(true);
+      setShowEmptyDeckMessage(true);
+      setTimeout(() => setShowEmptyDeckMessage(false), 1000); // Reset after 1 second
+      return;
+    }
+    setIsDeckEmpty(false);
+    const card = currentDeck.shift();
     let newDrawnCards = [...drawnCards];
     newDrawnCards[index] = { ...card, reversed: Math.random() < 0.5 };
     setDrawnCards(newDrawnCards);
+    setCurrentDeck(currentDeck);
   };
   
   const resetDeck = () => {
     setDrawnCards([]);
-    // Reinitialize the deck (you might need to import the original deck again)
-    shuffleDeck();
+    setIsDeckEmpty(false);
+    shuffleDeck([...tarotCards]); // Pass a fresh copy of the original tarotCards array
   };
 
   return (
     <View style={styles.container}>
-      <TouchableOpacity onPress={shuffleDeck} style={styles.shuffleButton}>
+      <TouchableOpacity 
+         onPress={() => shuffleDeck([...currentDeck])}  
+        style={[styles.shuffleButton, isDeckEmpty && styles.disabledButton]}
+        disabled={isDeckEmpty}
+      >
       <LinearGradient
           colors={['#9E9E9E', '#E0E0E0']} // Adjust these colors as needed
           style={styles.shuffleButton}
@@ -42,7 +65,9 @@ export default function App() {
           <Text style={styles.shuffleButtonText}>Shuffle</Text>
         </LinearGradient>
       </TouchableOpacity>
-  
+
+      <EmptyDeckAnimatedText isVisible={showEmptyDeckMessage} />
+
       <View style={styles.cardGrid}>
         {[0, 1, 2].map((index) => (
           <TouchableOpacity key={index} onPress={() => drawCard(index)} style={styles.cardContainer}>

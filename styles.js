@@ -46,6 +46,10 @@ const styles = StyleSheet.create({
         fontSize: 16, // Adjust as needed
         fontWeight: 'bold',
     },
+    disabledButton: {
+        backgroundColor: '#ccc', // Greyed out
+        borderColor: '#aaa',
+      },
     resetButton: {
       // Styles for the reset button
     },
