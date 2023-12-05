@@ -24,6 +24,7 @@ const styles = StyleSheet.create({
     },
     cardText: {
       // Styles for the text inside each card container
+      textAlign: 'center'
     },
     // ... other styles
   });
