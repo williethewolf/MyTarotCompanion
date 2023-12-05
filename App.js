@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { Text, View, TouchableOpacity } from 'react-native';
+import { Image } from 'expo-image'
 import styles from './styles'
 import { LinearGradient } from 'expo-linear-gradient';
 import { StatusBar } from 'expo-status-bar';
@@ -7,6 +8,7 @@ import { StatusBar } from 'expo-status-bar';
 import EmptyDeckAnimatedText from './emptyDeckAnimatedText';
 
 import tarotCards from './tarotCards';
+import backofCards from "./assets/BackofDeck.svg";
 
 export default function App() {
   const [currentDeck, setCurrentDeck] = useState([...tarotCards]);
@@ -62,6 +64,10 @@ export default function App() {
           start={{ x: 0, y: 0 }}
           end={{ x: 1, y: 1 }}
         >
+          <Image 
+          width={'110%'} height={'110%'} fill={"red"} 
+          style={{ position: 'absolute' }} 
+          source={backofCards} />
           <Text style={styles.shuffleButtonText}>Shuffle</Text>
         </LinearGradient>
       </TouchableOpacity>
