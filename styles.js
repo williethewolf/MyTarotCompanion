@@ -56,11 +56,13 @@ const styles = StyleSheet.create({
         width: 100,
         aspectRatio : 1 /1.87,
         margin: 10,
-        borderColor: 'blue',
-        borderWidth: 2,
+        borderColor: '#2c3252',
+        borderWidth: 0.5,
+        opacity: 0.5,
         borderStyle: 'dotted',
         justifyContent: 'center',
         alignItems: 'center',
+        color: '#2c3252',
       },
 
       cardImage: {
@@ -69,12 +71,11 @@ const styles = StyleSheet.create({
         aspectRatio : 1 /1.87,
         resizeMode: 'contain', // To keep the image aspect ratio
       },     
-    cardGrid: {
+      threeTarotSpreadContainer: {
         flexDirection: 'row',
         justifyContent: 'center',
         alignItems: 'center',
         width: '100%',
-        columnGap: 13,
       },
     cardContainer: {
         width: '25%',

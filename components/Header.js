@@ -8,6 +8,7 @@ const Header = () => {
     <View style={styles.headerContainer}>
 
 <TouchableOpacity style={styles.roundButton}>
+  <Text style={styles.rightMenuButton}>⚿</Text>
         {/* Round Button/Icon */}
       </TouchableOpacity>
       
@@ -72,13 +73,21 @@ const styles = StyleSheet.create({
     color: '#1f2436'
     // Other styling for the title
   },
+  rightMenuButton:{
+    color: 'white',
+    fontSize: 24,
+    lineHeight:28.5,
+  },
   roundButton: {
     width: 30,
     height: 30,
     borderWidth: 2,
     borderColor: '#1f2436',
     borderRadius: 15,
-    backgroundColor: 'white', // Adjust the color
+    backgroundColor: '#161a29', // Adjust the color
+    alignItems: 'center',
+    justifyContent: 'center',
+    
     // Add any other styling for the round button
   }
 });

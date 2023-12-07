@@ -18,7 +18,7 @@ const styles = {
   lineTop: {
     height: 3, // Adjust as needed
     width: 5,
-    backgroundColor: '#171b29', // Adjust as needed
+    backgroundColor: '#dba597', // Adjust as needed
     marginVertical: 1, // Adjust as needed
     borderRadius: 2
     // Add other styles as needed
@@ -26,7 +26,7 @@ const styles = {
   lineMid: {
     height: 3, // Adjust as needed
     width: 12,
-    backgroundColor: '#171b29', // Adjust as needed
+    backgroundColor: '#dba597', // Adjust as needed
     marginVertical: 1, // Adjust as needed
     borderRadius: 4
     // Add other styles as needed
@@ -34,7 +34,7 @@ const styles = {
   lineBot: {
     height: 3, // Adjust as needed
     width: 20,
-    backgroundColor: '#171b29', // Adjust as needed
+    backgroundColor: '#dba597', // Adjust as needed
     marginVertical: 1.5, // Adjust as needed
     borderRadius: 4
     // Add other styles as needed
