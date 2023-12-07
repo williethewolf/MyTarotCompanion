@@ -40,8 +40,10 @@ const EmptyDeckAnimatedText = ({ isVisible }) => {
     <Animated.Text
       style={{
         opacity: fadeAnim,
-        transform: [{ scale: scaleAnim }],
-        // other styles for the text
+    transform: [{ scale: scaleAnim }],
+    fontSize: 20, // Example font size, adjust as needed
+    margin: 0,
+    padding: 0,
       }}
     >
       No more cards to draw!
