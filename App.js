@@ -1,11 +1,14 @@
 import { useState, useRef, useEffect } from 'react';
-import { Text, View, TouchableOpacity, Animated, PanResponder } from 'react-native';
+import { Text, View, TouchableOpacity, Animated, PanResponder, SafeAreaView  } from 'react-native';
 import { Image } from 'expo-image'
 import styles from './styles'
 //import { LinearGradient } from 'expo-linear-gradient';
 import { StatusBar } from 'expo-status-bar';
+//page components
+import Header from './components/Header'
+import SafeViewAndroid from "./components/SafeViewAndroid";
 
-import EmptyDeckAnimatedText from './components/emptyDeckAnimatedText';
+import EmptyDeckAnimatedText from './components/EmptyDeckAnimatedText';
 //deck data and assets
 import tarotCards from './tarotCards';
 import backofCards from "./assets/BackofDeck.svg";
@@ -126,7 +129,9 @@ export default function App() {
   };
 
   return (
-    <View style={styles.container}> 
+    <SafeAreaView  style={[, SafeViewAndroid.AndroidSafeArea]}>
+    <Header /> 
+    <View style={styles.container}>
     <View>
     {/* Static Card - Visible only when deck is not empty */}
     {/* Static Card or Placeholder */}
@@ -162,7 +167,8 @@ export default function App() {
       </TouchableOpacity>
   
       <StatusBar style="auto" />
-    </View>
+      </View>
+    </SafeAreaView >
   );
 }
 

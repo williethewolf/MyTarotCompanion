@@ -5,9 +5,10 @@ const CARD_SLOT_SIZE = 100;
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#fff',
+        backgroundColor: '#fff5eb',
         alignItems: 'center',
         justifyContent: 'space-around',
+        padding:10
       },
     //card styles
     card: {
