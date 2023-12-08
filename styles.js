@@ -71,7 +71,7 @@ const styles = StyleSheet.create({
         borderStyle: 'dotted',
         justifyContent: 'center',
         alignItems: 'center',
-        color: '#2c3252',
+        color: '#DEE3DF',
       },
 
       cardBackImage: {
@@ -179,7 +179,25 @@ const styles = StyleSheet.create({
       fontSize: 16, // Text font size
       fontWeight: 'bold', // Text weight
     },
-    // ... other styles
+
+    threeTarotSpreadLables: {
+      //flex:3,
+      flexDirection: 'row',
+      //justifyContent: 'space-between',
+      //alignItems: 'center',
+      gap:25
+    },
+    threeTarotSpreadLable: {
+      width: 95,
+      flexDirection: 'row',
+      borderColor: '#c4ae7e',
+      borderWidth: 1,
+      marginTop: 10,
+      textAlign:"center",
+      //justifyContent: 'space-between',
+      //paddingHorizontal: 20,
+      //alignItems: 'center',
+    },
   });
 
   export default styles;

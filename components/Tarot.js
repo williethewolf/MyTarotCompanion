@@ -151,6 +151,11 @@ const Tarot= () => {
         </View>
       ))}
     </View>
+    <View style = {styles.threeTarotSpreadLables}>
+        <Text style = {styles.threeTarotSpreadLable}>Past</Text>
+        <Text style = {styles.threeTarotSpreadLable}>Present</Text>
+        <Text style = {styles.threeTarotSpreadLable}>Future</Text>
+    </View>
     {/*Lower bottom interactionables */}
     <View style={styles.deckControls}>
     <TouchableOpacity onPress={resetDeck} style={styles.pillButton}>
@@ -177,7 +182,7 @@ const Tarot= () => {
       </View>
       {/* Reset Button */}
       <TouchableOpacity onPress={resetDeck} style={styles.pillButton}>
-        <Text style={styles.pillButtonText}>Reset</Text>
+        <Text style={styles.pillButtonText}>Read</Text>
       </TouchableOpacity>
       </View>
     </View>
