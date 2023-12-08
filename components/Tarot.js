@@ -9,6 +9,9 @@ import tarotCards from '../tarotCards';
 import backofCards from "../assets/BackofDeck.svg";
 
 const Tarot= () => {
+  //Define drop area limits
+  const dropZoneLayouts = useRef([]).current;
+  const [containerLayout, setContainerLayout] = useState({ x: 0, y: 0, width: 0, height: 0 });  
   //Deck in use
   const currentDeck = useRef([...tarotCards]);
   //Hand dealt
@@ -20,7 +23,6 @@ const Tarot= () => {
   const [isDragging, setIsDragging] = useState(false);
   //drag animation ref to determine where its being held
   const pan = useRef(new Animated.ValueXY()).current;
-  const dropZoneLayouts = useRef([]).current;
   
 
   const shuffleDeck = () => {
@@ -62,9 +64,22 @@ const Tarot= () => {
     shuffleDeck()
   };
 
+  // Function to capture layout of drop zones
   const onDropZoneLayout = (event, index) => {
-    const layout = event.nativeEvent.layout;
-    dropZoneLayouts[index] = layout; // Store layout for each drop zone
+    const { x, y, width, height } = event.nativeEvent.layout;
+    const offsetY = containerLayout.y;
+    console.log(`Drop Zone ${index}: x=${x}, y=${y}, width=${width}, height=${height}`);
+    // Ensure the array at this index is defined
+    if (!dropZoneLayouts[index]) {
+      dropZoneLayouts[index] = {};
+    }
+    // Update the specific index with layout information
+    dropZoneLayouts[index] = { x, y: y - offsetY, width, height };
+  };
+
+  const onContainerLayout = (event) => {
+    const { x, y, width, height } = event.nativeEvent.layout;
+    setContainerLayout({ x, y, width, height });
   };
 
 
@@ -129,14 +144,19 @@ const Tarot= () => {
       {/* Empty Deck Message - TEMPORARILY DISABLED */}
       {/*<EmptyDeckAnimatedText isVisible={showEmptyDeckMessage} />*/}
        {/* Card Drop Zones */}
-    <View style = {styles.threeTarotSpreadContainer}>
+    <View style = {styles.threeTarotSpreadContainer} >
       {Object.keys(drawnCards).map((key, index) => (
-        <View key={key} style={styles.dropZone} onLayout={(e) => onDropZoneLayout(e, index)}>
+        <View key={key} style={[styles.dropZone,{ backgroundColor: 'lightblue' }]} onLayout={(e) => onDropZoneLayout(e, index)}>
           <Text>{drawnCards[key] ? `${drawnCards[key].name} ${drawnCards[key].reversed ? '(Reversed)' : ''}` : `Drop here`}</Text>
         </View>
       ))}
     </View>
-    <View>
+    {/*Lower bottom interactionables */}
+    <View style={styles.deckControls}>
+    <TouchableOpacity onPress={resetDeck} style={styles.pillButton}>
+        <Text style={styles.pillButtonText}>Reset</Text>
+      </TouchableOpacity>
+    <View style={styles.dealingDeck}>
     {/* Static Deck - Visible only when deck is not empty */}
     {/* Static Card or Placeholder */}
       {!isDeckEmpty ? (
@@ -149,16 +169,17 @@ const Tarot= () => {
       {!isDeckEmpty && (
         <Animated.View
           {...panResponder.panHandlers}
-          style={[pan.getLayout(), styles.card, isDragging && styles.draggingCard]}
+          style={[pan.getLayout(), styles.draggableCard, isDragging && styles.draggingCard]}
         >
-          <Image source={backofCards} style={styles.cardImage} />
+          <Image source={backofCards} style={styles.cardBackImage} />
         </Animated.View>
       )}
       </View>
       {/* Reset Button */}
-      <TouchableOpacity onPress={resetDeck} style={styles.resetButton}>
-        <Text>Reset</Text>
+      <TouchableOpacity onPress={resetDeck} style={styles.pillButton}>
+        <Text style={styles.pillButtonText}>Reset</Text>
       </TouchableOpacity>
+      </View>
     </View>
   );
 }

@@ -34,8 +34,9 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     padding: 10,
-    backgroundColor: '#fff5eb',
+    backgroundColor: '#FFFCF0',
     borderTopWidth:0.5,
+    borderBottomWidth:0.2,
     borderColor: '#c4ae7e',
     // Add any additional styling if needed
   },
@@ -82,7 +83,7 @@ const styles = StyleSheet.create({
     width: 30,
     height: 30,
     borderWidth: 2,
-    borderColor: '#1f2436',
+    borderColor: '#142637',
     borderRadius: 15,
     backgroundColor: '#161a29', // Adjust the color
     alignItems: 'center',

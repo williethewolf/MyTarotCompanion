@@ -5,15 +5,15 @@ const CARD_SLOT_SIZE = 100;
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#fff5eb',
+        backgroundColor: '#FFFCF0',
         alignItems: 'center',
-        justifyContent: 'space-around',
+        //justifyContent: 'space-around',
         padding:10
       },
     //card styles
     card: {
         // Style for the card that will be dragged
-        width: 100, // Set a fixed width or base it on the screen size
+        width: '60%', // Set a fixed width or base it on the screen size
         aspectRatio : 1 /1.87, // Height based on the aspect ratio of a tarot card
         backgroundColor: '#fff', // Adjust as needed
         justifyContent: 'center',
@@ -32,14 +32,23 @@ const styles = StyleSheet.create({
         zIndex:10000
       },
       draggableCard: {
-        width: 100,
-        height: 150,
-        backgroundColor: 'skyblue',
-        justifyContent: 'center',
+        width: '86%', // Set a fixed width or base it on the screen size
+        aspectRatio : 1 /1.87, // Height based on the aspect ratio of a tarot card
+        //backgroundColor: '#fff', // Adjust as needed
+        //justifyContent: 'center',
         alignItems: 'center',
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height: 1 },
+        shadowOpacity: 0.3,
+        shadowRadius: 2,
+        elevation: 3, // For Android
+        position: 'absolute', // Important for positioning the card freely
+        //left: '50%',
+        marginLeft: 15,
+        //marginTop: 2, 
       },
       topDeckCard: {
-        width: 100,
+        width: '85%',
         aspectRatio : 1 /1.87,
         backgroundColor: 'skyblue',
         justifyContent: 'center',
@@ -49,7 +58,7 @@ const styles = StyleSheet.create({
         borderColor: 'black',
       },
       cardPlaceholder: {
-        width: 100,
+        width: '100%',
         aspectRatio : 1 /1.87,
       },
       dropZone: {
@@ -65,7 +74,7 @@ const styles = StyleSheet.create({
         color: '#2c3252',
       },
 
-      cardImage: {
+      cardBackImage: {
         // Style for the image inside the draggable card
         width: '100%',
         aspectRatio : 1 /1.87,
@@ -75,7 +84,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'center',
         alignItems: 'center',
-        width: '100%',
+        //width: '100%',
       },
     cardContainer: {
         width: '25%',
@@ -123,6 +132,52 @@ const styles = StyleSheet.create({
     cardText: {
       // Styles for the text inside each card container
       textAlign: 'center'
+    },
+    dropZoneLabel: {
+      position: 'absolute',
+      color: 'black',
+      fontSize: 12,
+      flex: 1, 
+      flexWrap: 'wrap',
+      borderWidth: 2,
+      flexShrink: 1,
+      // Adjust positioning as needed
+    },
+    dealingDeck: {
+      //justifyContent: 'center',
+      alignItems: 'center'
+    },
+    deckControls: {
+      height: 85,
+      flexDirection: 'row',
+      justifyContent: 'center',
+      alignItems: 'center',
+      position: 'absolute', 
+      borderWidth:0.5,
+      borderColor: '#c4ae7e',
+      paddingHorizontal: 100,
+      // right: 10, 
+      bottom: 0,
+      //maxWidth: '90%', // Adjust as needed
+      alignSelf: 'center',
+    },
+
+    pillButton: {
+      
+      backgroundColor: '#f5e5ba', // Button color
+      paddingHorizontal: 20, // Horizontal padding
+      paddingVertical: 10, // Vertical padding
+      borderRadius: 30, // Half of your button height to create a pill shape
+      borderWidth: 2, // Border width
+      borderColor: '#c4ae7e', // Border color
+      alignItems: 'center', // Center text horizontally
+      justifyContent: 'center', // Center text vertically
+    },
+
+    pillButtonText: {
+      color: '#142637', // Text color
+      fontSize: 16, // Text font size
+      fontWeight: 'bold', // Text weight
     },
     // ... other styles
   });
