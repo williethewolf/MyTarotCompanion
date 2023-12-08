@@ -23,6 +23,9 @@ const Tarot= () => {
   const [isDragging, setIsDragging] = useState(false);
   //drag animation ref to determine where its being held
   const pan = useRef(new Animated.ValueXY()).current;
+  //auto dealing ref
+  const nextZoneRef = useRef(0);
+  //Card scaling animation WIP
   
 
   const shuffleDeck = () => {
@@ -37,21 +40,19 @@ const Tarot= () => {
   
   const drawCard = (index) => {
     if (currentDeck.current.length === 0) {
-      // Handle empty deck
       setIsDeckEmpty(true);
       setShowEmptyDeckMessage(true);
       setTimeout(() => setShowEmptyDeckMessage(false), 1000);
       return;
     }
-  
+    
     const card = { ...currentDeck.current.shift(), reversed: Math.random() < 0.5 };
-    setDrawnCards(prevDrawnCards => {
-      let updatedDrawnCards = { ...prevDrawnCards };
-      updatedDrawnCards[`card${index + 1}`] = card;
-      return updatedDrawnCards;
-    });
-    console.log('Card drawn', card);
-    // If deck is empty after drawing a card
+    const cardKey = `card${index + 1}`;
+    setDrawnCards(prevDrawnCards => ({
+      ...prevDrawnCards,
+      [cardKey]: card
+    }));
+  
     if (currentDeck.current.length === 0) {
       setIsDeckEmpty(true);
     }
@@ -80,8 +81,37 @@ const Tarot= () => {
   const onContainerLayout = (event) => {
     const { x, y, width, height } = event.nativeEvent.layout;
     setContainerLayout({ x, y, width, height });
+    console.log("Container layout: ", { x, y, width, height });
   };
 
+  const handleSwipeUp = () => {
+    drawCard(nextZoneRef.current);
+    nextZoneRef.current = (nextZoneRef.current + 1) % 3; // Cycle through 0, 1, 2
+    pan.setValue({ x: 0, y: 0 });
+    pan.flattenOffset();
+    setIsDragging(false);
+  };
+
+  const handleDragRelease = (gestureState) => {
+    // Adjust dropY to be relative to the container
+    const dropX = gestureState.moveX;
+    const dropY = gestureState.moveY - containerLayout.y;
+  
+    const droppedZone = checkDropZone(dropX, dropY);
+  
+    if (droppedZone !== -1) {
+      drawCard(droppedZone);
+      pan.setValue({ x: 0, y: 0 });
+    } else {
+      // Spring back if not dropped in a valid zone
+      Animated.spring(pan, {
+        toValue: { x: 0, y: 0 },
+        useNativeDriver: false
+      }).start();
+    }
+    pan.flattenOffset();
+    setIsDragging(false);
+  };
 
   const panResponder = useRef(
     PanResponder.create({
@@ -98,29 +128,27 @@ const Tarot= () => {
         { useNativeDriver: false }
       ),
       onPanResponderRelease: (e, gestureState) => {
-        // Check if this is a tap or a drag
-      if (Math.abs(gestureState.dx) < 5 && Math.abs(gestureState.dy) < 5) {
-        // It's a tap, shuffle the deck
-        setIsDragging(false);
-        shuffleDeck();
-      } else {
-        // It's a drag, handle drop
-      
-        const dropX = gestureState.moveX;
-        const dropY = gestureState.moveY;
-        const droppedZone = checkDropZone(dropX, dropY);
-
-        if (!droppedZone) {
-          // Only spring back if not dropped in a valid zone
-          Animated.spring(pan, {
-            toValue: { x: 0, y: 0 },
-            useNativeDriver: false
-          }).start();
-        } else{pan.setValue({ x: 0, y: 0 });}
-
+        const verticalMovement = Math.abs(gestureState.dy);
+        const verticalVelocity = Math.abs(gestureState.vy);
+  
+        // Define thresholds
+        const swipeDistanceThreshold = 50; // Adjust as needed
+        const swipeVelocityThreshold = 0.5; // Adjust as needed
+        const tapDistanceThreshold = 5; // Adjust as needed
+  
+        if (verticalMovement > swipeDistanceThreshold && verticalVelocity > swipeVelocityThreshold) {
+          // It's a swipe
+          handleSwipeUp();
+        } else if (verticalMovement < tapDistanceThreshold && Math.abs(gestureState.dx) < tapDistanceThreshold) {
+          // It's a tap
+          shuffleDeck();
+        } else {
+          // It's a drag and drop
+          handleDragRelease(gestureState);
+        }
+  
         pan.flattenOffset();
         setIsDragging(false);
-        }
       }
     })
   ).current;
@@ -130,11 +158,7 @@ const Tarot= () => {
       layout => x >= layout.x && x <= layout.x + layout.width &&
                 y >= layout.y && y <= layout.y + layout.height
     );
-    const isValidDrop = droppedZone !== -1;
-    if (isValidDrop) {
-      drawCard(droppedZone);
-    }
-    return isValidDrop;
+    return droppedZone;
   };
 
   return (
@@ -144,7 +168,7 @@ const Tarot= () => {
       {/* Empty Deck Message - TEMPORARILY DISABLED */}
       {/*<EmptyDeckAnimatedText isVisible={showEmptyDeckMessage} />*/}
        {/* Card Drop Zones */}
-    <View style = {styles.threeTarotSpreadContainer} >
+    <View style = {styles.threeTarotSpreadContainer} onLayout={onContainerLayout}>
       {Object.keys(drawnCards).map((key, index) => (
         <View key={key} style={[styles.dropZone,{ backgroundColor: 'lightblue' }]} onLayout={(e) => onDropZoneLayout(e, index)}>
           <Text>{drawnCards[key] ? `${drawnCards[key].name} ${drawnCards[key].reversed ? '(Reversed)' : ''}` : `Drop here`}</Text>
