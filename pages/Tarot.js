@@ -6,7 +6,7 @@ import styles from '../styles';
 //import EmptyDeckAnimatedText from './components/EmptyDeckAnimatedText';
 //deck data and assets
 import tarotCards from '../tarotCards';
-import backofCards from "../assets/BackofDeck.svg";
+import backofCards from "../assets/decks/riderTarot/BackofDeck.svg";
 
 const Tarot= () => {
   //Define drop area limits

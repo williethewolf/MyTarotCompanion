@@ -7,7 +7,7 @@ import { StatusBar } from 'expo-status-bar';
 //page components
 import Header from './components/Header'
 import SafeViewAndroid from "./components/SafeViewAndroid";
-import Tarot from './components/Tarot';
+import Tarot from './pages/Tarot';
 
 
 export default function App() {
