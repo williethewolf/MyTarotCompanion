@@ -187,9 +187,10 @@ const styles = StyleSheet.create({
       //alignItems: 'center',
       gap:25
     },
+
     threeTarotSpreadLable: {
       width: 95,
-      flexDirection: 'row',
+      //flexDirection: 'row',
       borderColor: '#c4ae7e',
       borderWidth: 1,
       marginTop: 10,
@@ -198,6 +199,38 @@ const styles = StyleSheet.create({
       //paddingHorizontal: 20,
       //alignItems: 'center',
     },
+
+    cardMeaningsContainer: {
+      width: '90%',
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      gap:25,
+      //marginHorizontal:5,
+    },
+
+    cardMeaningsCard:{
+      flex:1,
+      //overflow: 'wrap',
+      
+
+    },
+
+    cardMeaningText:{
+      backgroundColor: '#f5e5ba', // Button color
+      paddingHorizontal: 20, // Horizontal padding
+      paddingVertical: 10, // Vertical padding
+      borderRadius: 30, // Half of your button height to create a pill shape
+      borderWidth: 2, // Border width
+      borderColor: '#c4ae7e', // Border color
+      alignItems: 'center', // Center text horizontally
+      justifyContent: 'center', // Center text vertically
+      color: 'white',
+      //borderWidth: 1,
+      marginTop: 10,
+      //textAlign:"center",
+      overflow: 'visible',
+    }
+    
   });
 
   export default styles;

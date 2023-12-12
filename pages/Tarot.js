@@ -1,5 +1,5 @@
 import { useState, useRef } from 'react';
-import { Text, View, TouchableOpacity, Animated, PanResponder} from 'react-native';
+import { Text, View, TouchableOpacity, Animated, PanResponder, ScrollView } from 'react-native';
 import { Image } from 'expo-image';
 import styles from '../styles';
 //Message for empty deck currently not in use
@@ -28,6 +28,7 @@ const Tarot= () => {
   //Card scaling animation WIP
   
 
+  //DECK OPERATIONS
   const shuffleDeck = () => {
     let newShuffledDeck = [...currentDeck.current]; // Clone the current deck
     for (let i = newShuffledDeck.length - 1; i > 0; i--) {
@@ -35,7 +36,7 @@ const Tarot= () => {
       [newShuffledDeck[i], newShuffledDeck[j]] = [newShuffledDeck[j], newShuffledDeck[i]];
     }
     currentDeck.current = newShuffledDeck;
-    console.log('Deck shuffled', currentDeck.current);
+    //console.log('Deck shuffled', currentDeck.current);
   };
   
   const drawCard = (index) => {
@@ -65,6 +66,8 @@ const Tarot= () => {
     shuffleDeck()
   };
 
+  //INTERACTIONS
+  //DROP ZONE LOGIC
   // Function to capture layout of drop zones
   const onDropZoneLayout = (event, index) => {
     const { x, y, width, height } = event.nativeEvent.layout;
@@ -84,6 +87,28 @@ const Tarot= () => {
     console.log("Container layout: ", { x, y, width, height });
   };
 
+   // Function to render meanings for each drawn card
+   const renderCardMeanings = (cardKey) => {
+    const card = drawnCards[cardKey];
+    if (!card) {
+      return (
+      <View style={styles.cardMeaningsCard}>
+      <View style={[flex=0.3,width=95]}>
+          <Text></Text>
+        </View>
+      </View>
+    )};
+
+    const meanings = card.reversed ? card.reversedMeaning : card.meaning;
+    return (
+      <ScrollView style={styles.cardMeaningsCard}>
+        {meanings.map((meaning, index) => (
+          <Text key={index} style={styles.cardMeaningText}>{meaning}</Text>
+        ))}
+      </ScrollView>
+    );
+  };
+  //GESTURE INTERACTIONS
   const handleSwipeUp = () => {
     drawCard(nextZoneRef.current);
     nextZoneRef.current = (nextZoneRef.current + 1) % 3; // Cycle through 0, 1, 2
@@ -179,6 +204,11 @@ const Tarot= () => {
         <Text style = {styles.threeTarotSpreadLable}>Past</Text>
         <Text style = {styles.threeTarotSpreadLable}>Present</Text>
         <Text style = {styles.threeTarotSpreadLable}>Future</Text>
+    </View>
+    <View style = {styles.cardMeaningsContainer}>
+        {renderCardMeanings('card1')}
+        {renderCardMeanings('card2')}
+        {renderCardMeanings('card3')}
     </View>
     {/*Lower bottom interactionables */}
     <View style={styles.deckControls}>
