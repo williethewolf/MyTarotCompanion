@@ -1,12 +1,12 @@
 import { useState, useRef } from 'react';
 import { Text, View, TouchableOpacity, Animated, PanResponder, ScrollView } from 'react-native';
 import { Image } from 'expo-image';
-import styles from '../styles';
+import styles from '../../styles';
 //Message for empty deck currently not in use
 //import EmptyDeckAnimatedText from './components/EmptyDeckAnimatedText';
 //deck data and assets
-import tarotCards from '../tarotCards';
-import backofCards from "../assets/decks/riderTarot/BackofDeck.svg";
+import tarotCards from '../../tarotCards';
+import backofCards from "../../assets/decks/riderTarot/BackofDeck.svg";
 
 const Tarot= () => {
   //Define drop area limits
