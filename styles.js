@@ -8,7 +8,8 @@ const styles = StyleSheet.create({
         backgroundColor: '#FFFCF0',
         alignItems: 'center',
         //justifyContent: 'space-around',
-        padding:10
+        padding:10,
+        position: 'relative'
       },
     //card styles
     card: {
@@ -33,6 +34,7 @@ const styles = StyleSheet.create({
       },
       draggableCard: {
         width: '86%', // Set a fixed width or base it on the screen size
+        maxWidth:300,
         aspectRatio : 1 /1.87, // Height based on the aspect ratio of a tarot card
         //backgroundColor: '#fff', // Adjust as needed
         //justifyContent: 'center',
@@ -49,6 +51,7 @@ const styles = StyleSheet.create({
       },
       topDeckCard: {
         width: '85%',
+        maxWidth: 300,
         aspectRatio : 1 /1.87,
         backgroundColor: 'skyblue',
         justifyContent: 'center',
@@ -62,7 +65,7 @@ const styles = StyleSheet.create({
         aspectRatio : 1 /1.87,
       },
       dropZone: {
-        width: 100,
+        width: '30%',
         aspectRatio : 1 /1.87,
         margin: 10,
         borderColor: '#2c3252',
@@ -84,7 +87,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'center',
         alignItems: 'center',
-        //width: '100%',
+        width: '90%',
       },
     cardContainer: {
         width: '25%',
@@ -145,27 +148,31 @@ const styles = StyleSheet.create({
     },
     dealingDeck: {
       //justifyContent: 'center',
-      alignItems: 'center'
+      width:'45%',
+      alignItems: 'center',
+      maxWidth:300,
     },
     deckControls: {
+      flex: 1,
       height: 85,
+      width:'85%',
       flexDirection: 'row',
-      justifyContent: 'center',
+      justifyContent: 'space-between',
       alignItems: 'center',
       position: 'absolute', 
-      borderWidth:0.5,
-      borderColor: '#c4ae7e',
-      paddingHorizontal: 100,
-      // right: 10, 
+      // borderWidth:0.5,
+      // borderColor: '#c4ae7e',
+      // //paddingHorizontal: 100,
+      left:6, 
       bottom: 0,
-      //maxWidth: '90%', // Adjust as needed
-      alignSelf: 'center',
+      // //maxWidth: '90%', // Adjust as needed
+      // alignSelf: 'center',
     },
 
     pillButton: {
       
       backgroundColor: '#f5e5ba', // Button color
-      paddingHorizontal: 20, // Horizontal padding
+      paddingHorizontal: '12%', // Horizontal padding - it was 20
       paddingVertical: 10, // Vertical padding
       borderRadius: 30, // Half of your button height to create a pill shape
       borderWidth: 2, // Border width
@@ -181,15 +188,17 @@ const styles = StyleSheet.create({
     },
 
     threeTarotSpreadLables: {
-      //flex:3,
       flexDirection: 'row',
+        justifyContent: 'center',
+      //flex:3,
       //justifyContent: 'space-between',
       //alignItems: 'center',
+      width:'90%',
       gap:25
     },
 
     threeTarotSpreadLable: {
-      width: 95,
+      width: '30%',
       //flexDirection: 'row',
       borderColor: '#c4ae7e',
       borderWidth: 1,
@@ -201,7 +210,7 @@ const styles = StyleSheet.create({
     },
 
     cardMeaningsContainer: {
-      width: '90%',
+      width: '95%',
       flexDirection: 'row',
       justifyContent: 'space-between',
       gap:25,
@@ -210,18 +219,18 @@ const styles = StyleSheet.create({
 
     cardMeaningsCard:{
       flex:1,
-      //overflow: 'wrap',
+      //overflow: 'scroll',
       
 
     },
 
     cardMeaningText:{
       backgroundColor: '#f5e5ba', // Button color
-      paddingHorizontal: 20, // Horizontal padding
-      paddingVertical: 10, // Vertical padding
-      borderRadius: 30, // Half of your button height to create a pill shape
-      borderWidth: 2, // Border width
-      borderColor: '#c4ae7e', // Border color
+      paddingHorizontal: 6, // Horizontal padding
+      paddingVertical: 2, // Vertical padding
+      borderRadius: 6, // Half of your button height to create a pill shape
+      //borderWidth: 2, // Border width
+      //borderColor: '#c4ae7e', // Border color
       alignItems: 'center', // Center text horizontally
       justifyContent: 'center', // Center text vertically
       color: 'white',
@@ -229,6 +238,7 @@ const styles = StyleSheet.create({
       marginTop: 10,
       //textAlign:"center",
       overflow: 'visible',
+      //overflow: 'scroll'
     }
     
   });

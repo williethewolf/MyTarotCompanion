@@ -5,7 +5,7 @@ import styles from '../../styles';
 //Message for empty deck currently not in use
 //import EmptyDeckAnimatedText from './components/EmptyDeckAnimatedText';
 //deck data and assets
-import tarotCards from '../../tarotCards';
+import tarotCards from '../../data/tarotCards';
 import backofCards from "../../assets/decks/riderTarot/BackofDeck.svg";
 
 const Tarot= () => {
@@ -61,6 +61,7 @@ const Tarot= () => {
 
   const resetDeck = () => {
     setDrawnCards({ card1: null, card2: null, card3: null });
+    nextZoneRef.current=0;
     setIsDeckEmpty(false);
     currentDeck.current=[...tarotCards];
     shuffleDeck()
@@ -212,17 +213,17 @@ const Tarot= () => {
     </View>
     {/*Lower bottom interactionables */}
     <View style={styles.deckControls}>
-    <TouchableOpacity onPress={resetDeck} style={styles.pillButton}>
+      <TouchableOpacity onPress={resetDeck} style={styles.pillButton}>
         <Text style={styles.pillButtonText}>Reset</Text>
       </TouchableOpacity>
-    <View style={styles.dealingDeck}>
+      <View style={styles.dealingDeck}>
     {/* Static Deck - Visible only when deck is not empty */}
     {/* Static Card or Placeholder */}
-      {!isDeckEmpty ? (
-        <Image source={backofCards} style={styles.topDeckCard} />
-      ) : (
-        <View style={styles.cardPlaceholder} />
-      )}
+        {!isDeckEmpty ? (
+          <Image source={backofCards} style={styles.topDeckCard} />
+        ) : (
+          <View style={styles.cardPlaceholder} />
+        )}
 
       {/* Draggable Card */}
       {!isDeckEmpty && (
@@ -232,12 +233,12 @@ const Tarot= () => {
         >
           <Image source={backofCards} style={styles.cardBackImage} />
         </Animated.View>
-      )}
-      </View>
+        )}
+        </View>
       {/* Reset Button */}
-      <TouchableOpacity onPress={resetDeck} style={styles.pillButton}>
-        <Text style={styles.pillButtonText}>Read</Text>
-      </TouchableOpacity>
+        <TouchableOpacity onPress={resetDeck} style={styles.pillButton}>
+          <Text style={styles.pillButtonText}>Read</Text>
+        </TouchableOpacity>
       </View>
     </View>
   );
