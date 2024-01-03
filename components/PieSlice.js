@@ -94,26 +94,56 @@ useEffect(() => {
 if (!pieMenu.visible) return null;
 
 
+//Decorative stuff
+const circleAccent = {
+    position: 'absolute',
+    width: 60,
+    height: 60,
+    borderWidth: 1,
+    borderColor: '#c4ae7e',
+    borderRadius: 60/2,
+    backgroundColor: '#e8d2c1',
+    
+    alignItems: 'center',
+    justifyContent: 'center',
+    zIndex: 999, // Ensure the button is above the pie menu
+};
+
+//LOOKIE HERE!!!!!!
+//ADD A POINTER EVENT NONE TO THE SLICES WITHOUT PATH TO PREVENT OVERLAPPINGS
+const pointerEventsValue = name === "FILLER" ? "none" : "box-none";
+const isNotFiller = name !== "FILLER";
 return (
   
-    <Svg pointerEvents='box-none' height="300" width="300" viewBox="0 0 300 300" style={{ position: 'absolute', transform: [{ rotate: `${rotation}deg` }], zIndex:1 }}>
+    <Svg pointerEvents={pointerEventsValue} height="300" width="300" viewBox="0 0 300 300" style={{ position: 'absolute', transform: [{ rotate: `${rotation}deg` }], zIndex:1 }}>
       <Circle r="3" cx="35" cy="35" fill="#c4ae7e" />
-      <Link href={urlTo()} asChild>
-      <Path
-      d={slicePath} 
-      fill={fillColor}
-      onPressIn={handlePressIn}
-      onPressOut={handlePressOut}
-      onPress={onPress}
-      style ={{  borderWidth: 1,
-        borderColor: '#c4ae7e',
-        borderRadius: 50,}}
-      />
-     </Link>
-     <Link href={urlTo()}  onPressOut={handlePressOut} style={[styles.text, { left: textX, top: textY,  transform: [{ rotate: `${textRotationAngle}deg` }], }]}>{name}</Link>
-    {/* <Text pointerEvents='none' style={[styles.text, { left: textX, top: textY,  transform: [{ rotate: `${textRotationAngle}deg` }], }]}>
+      {isNotFiller ? (
+        <Link href={urlTo()} asChild>
+          <Path
+            d={slicePath} 
+            fill={fillColor}
+            onPressIn={handlePressIn}
+            onPressOut={handlePressOut}
+            onPress={onPress}
+            style={{ borderWidth: 1, borderColor: '#c4ae7e', borderRadius: 50 }}
+          />
+        </Link>
+      ):( <Path
+        d={slicePath} 
+        fill={fillColor}
+        style={{ borderWidth: 1, borderColor: '#c4ae7e', borderRadius: 50 }}
+      />)}
+      {isNotFiller ? (
+        <Link href={urlTo()} onPressOut={handlePressOut} style={[styles.text, { left: textX, top: textY, transform: [{ rotate: `${textRotationAngle}deg` }] }]}>
+          {name}
+        </Link>
+      ) : (
+        <Text>
+        </Text>
+      )}{/* <Text pointerEvents='none' style={[styles.text, { left: textX, top: textY,  transform: [{ rotate: `${textRotationAngle}deg` }], }]}>
       {name}
     </Text> */}
+    <View pointerEvents="none" style={[circleAccent, {left:textX+19 ,top: textY+75}] }/>
    
     </Svg>
 );
