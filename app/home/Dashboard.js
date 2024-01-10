@@ -5,7 +5,7 @@ import Carousel from 'react-native-reanimated-carousel';
 import HoroscopeOverview from '../../components/HoroscopeOverview';
 import users from '../../data/users';
 import axios from 'axios';
-import getUserZodiacSign from '../../components/getUserZodiacSigs';
+import getUserZodiacSign from '../../components/getUserZodiacSign';
 import tempHoroscopeData from '../../data/tempHoroscopeData';
 
 const user = users.find(user => user.mainUser === true);
@@ -51,7 +51,7 @@ export default function Dashboard() {
 
 useEffect(() => {
     const fetchData = async () => {
-        const userSign = getUserZodiacSign(user.dOB);
+        const userSign = getUserZodiacSign(user.dOB).name.toLowerCase();
         const horoscopeData = await getHoroscope(userSign);
         setHoroscope(horoscopeData);
     };

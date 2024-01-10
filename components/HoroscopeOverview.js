@@ -1,14 +1,61 @@
-import React from 'react';
-import { View, Image, Text, StyleSheet, Dimensions } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { View, Text, StyleSheet, Dimensions } from 'react-native';
 import { useFonts, Carattere_400Regular } from '@expo-google-fonts/carattere';
-import getUserZodiacSign from './getUserZodiacSigs';
+import getUserZodiacSign from './getUserZodiacSign';
+import { Image } from 'expo-image';
+import Carousel from 'react-native-reanimated-carousel';
+
+//Image Imports
+import getZodiacImage from './getZodiacImage';
+import getElementImage from './getElementImage';
+
+import MoonPhase from './MoonPhase';
+import MercuryRetrograde from './MercuryRetrograde';
 
 const screenWidth = Dimensions.get('window').width;
 
+
+
+
 const HoroscopeOverview = ({ user, horoscope }) => {
 
+    const [todayISODate, setTodayISODate] = useState(new Date().toISOString())
+    const [todayDate, setTodayDate] = useState(new Date().toDateString())
+
+    const currentSign = getUserZodiacSign(todayISODate);
     //console.log(horoscope)
     const Capitalize = s =>s ? s[0].toUpperCase() + s.slice(1) : "";
+    const userZodiac= getUserZodiacSign(user.dOB);
+    const zodiacImagePath = getZodiacImage(userZodiac.name);
+    const elementImagePath = getElementImage(userZodiac.element);
+
+    useEffect(() => {
+        const todayISOdate = () =>{
+            const date = new Date();
+            setTodayDate(date.toDateString())
+            setTodayISODate(date.toISOString());
+        };
+        todayISOdate();
+    }, []);
+
+   // Carousel configuration
+   const carouselConfig = {
+        width: 125,
+        height: 125,
+        loop: true,
+        autoPlay: false,
+        snapEnabled: true,
+    };
+    // Render Item for Carousel
+    const renderCarouselItem = (item, backgroundColor) => (
+        <View style={{ width: carouselConfig.width, height: carouselConfig.height, justifyContent: 'center', alignItems: 'center' }}>
+            <Image
+                source={getZodiacImage(item)}
+                style={{...styles.profileImage, height:'95%', width:'95%', backgroundColor}}
+            />
+            <Text style={{position:'absolute', bottom:10, color:'white'}}>{item}</Text>
+        </View>
+    );
 
     let [fontsLoaded] = useFonts({
         Carattere_400Regular,
@@ -24,32 +71,51 @@ const HoroscopeOverview = ({ user, horoscope }) => {
             <View style={styles.firstRow}>
                 <View style={styles.firstRowColumn1}>
                     <View style={styles.roundIconContainer}>
-                    <Text>A</Text>
+                    <Image
+                    source={zodiacImagePath}
+                    style={styles.smallRoundIcon}
+                 />
                     </View>
                     <View style={styles.roundIconContainer}>
-                    <Text>B</Text>
+                    <Image
+                    source={getZodiacImage('Cancer')}
+                    style={styles.smallRoundIcon}
+                 />
                     </View>
                     <View style={styles.roundIconContainer}>
-                    <Text>C</Text>
+                    <Image
+                    source={getZodiacImage('Libra')}
+                    style={styles.smallRoundIcon}
+                 />
                     </View>
                 </View>
                 <View style={styles.firstRowColumn2}>
-                    <View style={styles.profileImageDecoration}>
+                    <View style={{...styles.profileImageDecoration, 
+                                width: 170,
+                                height: 170,}}>
+                    <View style={{...styles.profileImageDecoration, 
+                                borderWidth:10,
+                                borderColor:"#e0bda2"
+                                }}>
                     <Image
                         source={{ uri: user.pFImage }}
                         style={styles.profileImage}
                     />
                     </View>
+                    </View>
                 </View>
                 <View style={styles.firstRowColumn3}>
                     <View style={styles.roundIconContainer}>
-                        <Text>D</Text>
+                        <Text style={{fontSize:20,}}>{userZodiac.luckyNumber}</Text>
+                    </View>
+                    <View style={{...styles.roundIconContainer, }}>
+                        <Text style={{fontSize:40,}}>{userZodiac.rulerSymbol[0]}</Text>
                     </View>
                     <View style={styles.roundIconContainer}>
-                        <Text>F</Text>
-                    </View>
-                    <View style={styles.roundIconContainer}>
-                        <Text>G</Text>
+                    <Image
+                    source={elementImagePath}
+                    style={styles.elementSmallRoundIcon}
+                 />
                     </View>
                 </View>
             </View>
@@ -57,53 +123,89 @@ const HoroscopeOverview = ({ user, horoscope }) => {
             {/* Second Row */}
             <View style={styles.secondRow}>
             {/* Content for Second Row */}
-            <Text style={styles.userName}>{user.name}</Text> 
-            </View>
-
-            {/* Third Row */}
-            <View style={styles.thirdRow}>
+                <View style={styles.nameBox}>
+                    <Text style={styles.userName}>{user.name}</Text> 
+                </View>
             <View>
+                <View style={{flexDirection:'row', justifyContent: 'space-between',}}>
                 <Text>Today's Horoscope</Text>
+                <Text>{new Date().toDateString()}</Text>
+                </View>
             {!horoscope ? (
                  <Text>Channeling the oracles...</Text>
             ) : (
             <>
-                <Text>{Capitalize(getUserZodiacSign(user.dOB))}</Text>
-                <Text>{horoscope.horoscope}</Text>
+                
+                <View style={{flexDirection:'column', alignItems:'center', borderWidth:0.5, margin:10, padding:10,}}>
+                    <View style={{flexDirection:'row'}}>
+                        <Text>{userZodiac.name}</Text>
+                        <Image
+                            source={zodiacImagePath}
+                            style={{
+                            width: 20,
+                            height: 20,
+                            }}
+                        />
+                    </View>
+                    <View>
+                        <Text>{horoscope.horoscope}</Text>
+                    </View>
+                 </View>
+                 
             </>
             )}
                 </View>
-                {/* <View style={styles.thirdRowColumn1}>
-                <Image
-                        source={{ uri: user.pFImage }}
-                        style={styles.profileImage}
-                    />
+            </View>
+
+            {/* Third Row */}
+            <View style={styles.thirdRow}>
+                <View style={{ justifyContent: 'center', alignItems: 'center',}}>
+                    <Text style={{fontSize:20, textAlign:'center',}}>Compatibility</Text>
                 </View>
-                <View style={styles.thirdRowColumn2}>
-                <Image
-                        source={{ uri: user.pFImage }}
-                        style={styles.profileImage}
-                    />
-                </View> */}
+                <View style={styles.thirdRowBottom}>
+                    <View style={styles.thirdRowColumn1}>
+                    <Carousel
+                            {...carouselConfig}
+                            data={userZodiac.compatibleWith}
+                            renderItem={({ item }) => renderCarouselItem(item, '#6d89a6')}
+                        />
+                    </View>
+                    <View style={styles.thirdRowColumn2}>
+                    <Carousel
+                            {...carouselConfig}
+                            data={userZodiac.incompatibleWith}
+                            renderItem={({ item }) => renderCarouselItem(item, '#bd9382')}
+                        />
+                    </View>
+                </View>
             </View>
 
             {/* Fourth Row */}
             <View style={styles.fourthRow}>
                 
                     <View style={styles.fourthRowColumn}>
-                        <Text>OP</Text>
+                    <Image
+                        source={getZodiacImage(currentSign.name)}
+                        style={{
+                            width: 30,
+                            height: 30,
+                            }}
+                    />
                     </View>
                     <View style={styles.fourthRowColumn}>
-                        <Text>OP</Text>
+                        <View style={{ position: 'relative', top:-12, lineHeight:35}}>
+                            <Text style={{ textAlign:'center', top:10,}}>☿</Text>
+                            <MercuryRetrograde/>
+                        </View>
                     </View>
                     <View style={styles.fourthRowColumn}>
-                        <Text>OP</Text>
+                        <MoonPhase display="symbol"/>
                     </View>
                     <View style={styles.fourthRowColumn}>
-                        <Text>OP</Text>
+                        <Text>🜚︎</Text>
                     </View>
                     <View style={styles.fourthRowColumnEnd}>
-                        <Text>OP</Text>
+                        <Text>🜨</Text>
                     </View>
             </View>
 
@@ -111,15 +213,15 @@ const HoroscopeOverview = ({ user, horoscope }) => {
             <View style={styles.fifthRow}>
                 <View style={styles.fifthRowColumn}>
                     <View style={styles.roundIconContainer}>
-                        <Text>O</Text>
+                        <Text style={{fontSize:60,  lineHeight:52, textAlignVertical:'center', transform: [{ rotate: '180deg' }]}}>⤗</Text>
                     </View>
                 </View>
                 <View style={styles.fifthRowColumn}>
-                    <Text>MoneyMaker</Text>
+                    <Text>Overview</Text>
                 </View>
                 <View style={styles.fifthRowColumn}>
                 <View style={styles.roundIconContainer}>
-                        <Text>O</Text>
+                        <Text style={{fontSize:60,  lineHeight:50, textAlignVertical:'center'}}>⤗</Text>
                     </View>
                 </View>
             </View>
@@ -132,19 +234,22 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         width: 0.9*screenWidth,
-        borderWidth:6,
+        //borderWidth:6,
         height:'100%',
         flexDirection:'column',
         // gap: 10,
         justifyContent: 'space-between',
+        marginBottom:10,
         
     },
     firstRow: {
-        flex:5,
+        flex:4,
         flexDirection: 'row',
         justifyContent: 'center',
         alignItems: 'center',
-        marginVertical:15,
+        marginVertical:10,
+        borderColor:"#7a4a3d",
+        borderBottomWidth:0.5,
     },
     firstRowColumn1: {
         flex: 1,
@@ -152,6 +257,14 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         paddingLeft:20,
         //width: width*0.6 // 20% for outer columns, 60% for middle
+    },
+    smallRoundIcon: {
+        width:30,
+        height:30,
+    },
+    elementSmallRoundIcon: {
+        width:45,
+        height:45,
     },
     firstRowColumn2: {
         flex: 3,
@@ -169,6 +282,8 @@ const styles = StyleSheet.create({
         width: 150,
         height: 150,
         borderRadius: 75, // Circular Image
+        borderWidth:1,
+        borderColor:"#7a4a3d",
     },
     profileImageDecoration: {
         width: 160,
@@ -177,20 +292,32 @@ const styles = StyleSheet.create({
         borderWidth:1,
         justifyContent: 'center',
         alignItems: 'center',
+        borderColor:"#7a4a3d"
     },
     secondRow: {
-        flex:2,
-        borderWidth:2
+        flex:4,
+        //borderWidth:2
+    },
+    nameBox:{
+        alignSelf: 'center',
+        paddingHorizontal: 60,
+        borderRadius: 50,
+        borderColor:'#c4ae7e',
+        borderWidth:1,
     },
     userName:{
         textAlign: 'center',
-        fontSize:40,
+        fontSize:30,
         fontFamily: 'Carattere_400Regular',
     },
     thirdRow: {
-        flex:8,
+        flex:3,
+        //flexDirection: 'row',
+        //marginVertical:10,
+    },
+    thirdRowBottom: {
         flexDirection: 'row',
-        marginVertical:10,
+        marginVertical:5,
     },
     thirdRowColumn1: {
         flex: 1,
@@ -205,8 +332,9 @@ const styles = StyleSheet.create({
         borderLefttWidth:1,
     },
     fourthRow: {
-        flex:3,
+        flex:2,
         flexDirection: 'row',
+        marginTop:20,
     },
     fourthRowColumn: {
         flex: 1, // Equal width columns
@@ -227,7 +355,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         borderWidth:1,
         borderRadius:200,
-        margin:10,
+        margin:5,
     },
     fifthRowColumn: {
         flex: 1,
@@ -239,9 +367,11 @@ const styles = StyleSheet.create({
         height:50,
         borderWidth: 1,
         borderRadius: 150,
-        marginVertical: '10',
+        borderColor:"#7a4a3d",
         justifyContent: 'center',
-        alignItems: 'center',  }
+        alignItems: 'center',
+        marginTop:3,  
+    }
 });
 
 export default HoroscopeOverview;

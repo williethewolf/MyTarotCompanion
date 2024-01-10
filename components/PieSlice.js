@@ -143,7 +143,8 @@ return (
       )}{/* <Text pointerEvents='none' style={[styles.text, { left: textX, top: textY,  transform: [{ rotate: `${textRotationAngle}deg` }], }]}>
       {name}
     </Text> */}
-    <View pointerEvents="none" style={[circleAccent, {left:textX+19 ,top: textY+75}] }/>
+    {/* decorative circles but I dont love them */}
+    {/* <View pointerEvents="none" style={[circleAccent, {left:textX+19 ,top: textY+75}] }/> */}
    
     </Svg>
 );

@@ -10,7 +10,7 @@ const getUserZodiacSign = (dob) => {
     const [endMonth, endDay] = sign.endDate.split('-').map(Number);
 
     if ((month === startMonth && day >= startDay) || (month === endMonth && day <= endDay)) {
-        return sign.name.toLowerCase();
+        return sign;
       
     }
   }

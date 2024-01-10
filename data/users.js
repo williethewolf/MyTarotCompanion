@@ -1,4 +1,4 @@
-import getUserZodiacSign from "../components/getUserZodiacSigs";
+import getUserZodiacSign from "../components/getUserZodiacSign";
 export default localUsersData=
 [
     {

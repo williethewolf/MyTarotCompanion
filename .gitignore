@@ -36,3 +36,6 @@ yarn-error.*
 
 #API
 .env
+
+#firebase cfg
+firebaseConfig.js
