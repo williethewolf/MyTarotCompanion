@@ -1,15 +1,27 @@
 import React from 'react';
-import { View, Text, Image, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import { Image } from 'expo-image';
+import CapitalizeFirst from '../utils/CapitalizeFirst';
 
-const StoneCard = ({ item }) => {
+const blurhash =
+  '|rF?hV%2WCj[ayj[a|j[az_NaeWBj@ayfRayfQfQM{M|azj[azf6fQfQfQIpWXofj[ayj[j[fQayWCoeoeaya}j[ayfQa{oLj?j[WVj[ayayj[fQoff7azayj[ayj[j[ayofayayayj[fQj[ayayj[ayfjj[j[ayjuayj[';
+
+const StoneCard = ({ item , onPress}) => {
+    
+    const defaultImagePath = require('../assets/stones/images/missing.png');
+    const imageSource = item.ImageURL ? { uri: item.ImageURL } : defaultImagePath;
+    //console.log(imageSource)
   return (
-    <View style={styles.card}>
-      <Image source={{ uri: item.ImageURL }} style={styles.image} />
-      <Text style={styles.title}>{item.Name[0]}</Text>
+    <TouchableOpacity onPress={() => onPress(item)} style={styles.card}>
+    <View>
+    {/* <Image source={{ uri: item.ImageURL }} restore when images are hosted */}
+      <Image source={imageSource} style={styles.image} placeholder={defaultImagePath} transition={500} alt={item.name} />
+      <Text style={styles.title}>{CapitalizeFirst(item.Name[0])}</Text>
       <Text numberOfLines={3} style={styles.description}>
         {item.Description}
       </Text>
     </View>
+    </TouchableOpacity>
   );
 };
 
