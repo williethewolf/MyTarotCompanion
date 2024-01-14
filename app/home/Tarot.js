@@ -1,4 +1,4 @@
-import { useState, useRef } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { Text, View, TouchableOpacity, Animated, PanResponder, ScrollView } from 'react-native';
 import { Image } from 'expo-image';
 import styles from '../../styles';
@@ -26,6 +26,13 @@ const Tarot= () => {
   //auto dealing ref
   const nextZoneRef = useRef(0);
   //Card scaling animation WIP
+
+  //makign the transition between cards cleaner and smoother
+  const [hasCardBeenDealt, setHasCardBeenDealt] = useState({
+    card1: false,
+    card2: false,
+    card3: false
+  });
   
 
   //DECK OPERATIONS
@@ -38,6 +45,10 @@ const Tarot= () => {
     currentDeck.current = newShuffledDeck;
     //console.log('Deck shuffled', currentDeck.current);
   };
+
+  useEffect(() => {
+    shuffleDeck();  // Shuffle the deck when the component mounts so cards are randomized from the start
+}, []);
   
   const drawCard = (index) => {
     if (currentDeck.current.length === 0) {
@@ -47,12 +58,21 @@ const Tarot= () => {
       return;
     }
     
-    const card = { ...currentDeck.current.shift(), reversed: Math.random() < 0.5 };
+    //const card = { ...currentDeck.current.shift(), reversed: Math.random() < 0.5 };
     const cardKey = `card${index + 1}`;
+    setHasCardBeenDealt(prevState => ({ ...prevState, [cardKey]: true }));
     setDrawnCards(prevDrawnCards => ({
       ...prevDrawnCards,
-      [cardKey]: card
+      [cardKey]: null
     }));
+
+    const newCard = { ...currentDeck.current.shift(), reversed: Math.random() < 0.5 };
+    setTimeout(() => {  // Set the new card after a brief delay
+        setDrawnCards(prevDrawnCards => ({
+            ...prevDrawnCards,
+            [cardKey]: newCard
+        }));
+    }, 100);
   
     if (currentDeck.current.length === 0) {
       setIsDeckEmpty(true);
@@ -65,6 +85,12 @@ const Tarot= () => {
     setIsDeckEmpty(false);
     currentDeck.current=[...tarotCards];
     shuffleDeck()
+
+    setHasCardBeenDealt({
+      card1: false,
+      card2: false,
+      card3: false
+    });
   };
 
   //INTERACTIONS
@@ -187,6 +213,10 @@ const Tarot= () => {
     return droppedZone;
   };
 
+  const reversedCardStyle = {
+    transform: [{ rotate: '180deg' }]
+  }
+
   return (
     <View style={styles.container}>
     {/* Dealing Deck view */}
@@ -196,8 +226,26 @@ const Tarot= () => {
        {/* Card Drop Zones */}
     <View style = {styles.threeTarotSpreadContainer} onLayout={onContainerLayout}>
       {Object.keys(drawnCards).map((key, index) => (
-        <View key={key} style={[styles.dropZone,{ backgroundColor: 'lightblue' }]} onLayout={(e) => onDropZoneLayout(e, index)}>
-          <Text>{drawnCards[key] ? `${drawnCards[key].name} ${drawnCards[key].reversed ? '(Reversed)' : ''}` : `Drop here`}</Text>
+        <View key={key} style={[styles.dropZone,]} onLayout={(e) => onDropZoneLayout(e, index)}>
+         {drawnCards[key] ? (
+          <View style={styles.cardImageContainer}>
+            <Image
+              source={drawnCards[key].image}
+              placeholder={backofCards}
+              transition={1000}
+              alt={drawnCards[key].name}
+              style={drawnCards[key].reversed ? [styles.cardImage, reversedCardStyle] : styles.cardImage}
+            />
+        </View>
+    ) : (
+      hasCardBeenDealt[key] ? (
+        <View style={styles.cardImageContainer}>
+        <Image source={backofCards} style={styles.cardImage} />
+        </View>
+      ) : (
+        <Text>Drop here</Text>
+      )
+    )}
         </View>
       ))}
     </View>

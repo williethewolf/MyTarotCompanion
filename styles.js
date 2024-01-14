@@ -66,15 +66,15 @@ const styles = StyleSheet.create({
       },
       dropZone: {
         width: '30%',
-        aspectRatio : 1 /1.87,
+        aspectRatio : 1 /1.7,
         margin: 10,
         borderColor: '#2c3252',
         borderWidth: 0.5,
-        opacity: 0.5,
+        //opacity: 0.5,
         borderStyle: 'dotted',
         justifyContent: 'center',
         alignItems: 'center',
-        color: '#DEE3DF',
+        backgroundColor: 'rgba(173, 216, 230, 0.5)',
       },
 
       cardBackImage: {
@@ -82,6 +82,22 @@ const styles = StyleSheet.create({
         width: '100%',
         aspectRatio : 1 /1.87,
         resizeMode: 'contain', // To keep the image aspect ratio
+      },     
+      cardImage: {
+        // Style for the image inside the draggable card
+        width: '90%',
+        aspectRatio : 1 /1.87,
+        resizeMode: 'contain', // To keep the image aspect ratio
+        
+      },
+      cardImageContainer:{
+        borderRadius: 5,
+        //margin:10,
+        backgroundColor:'white',
+        width: '100%',
+        justifyContent: 'center',
+        alignItems: 'center',
+
       },     
       threeTarotSpreadContainer: {
         flexDirection: 'row',
@@ -233,7 +249,7 @@ const styles = StyleSheet.create({
       //borderColor: '#c4ae7e', // Border color
       alignItems: 'center', // Center text horizontally
       justifyContent: 'center', // Center text vertically
-      color: 'white',
+      color: '#006994',
       //borderWidth: 1,
       marginTop: 10,
       //textAlign:"center",
