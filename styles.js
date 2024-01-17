@@ -258,12 +258,23 @@ const styles = StyleSheet.create({
       //overflow: 'scroll'
     },
     cardLabel:{
-      width: '120%',
+      width: '125%',
       overflow: 'visible',
       position: "absolute",
       bottom:-20,
       alignItems: 'center',
-    }
+    },
+
+    cardSelectionArea:{
+      //width:10
+    },
+
+    typeModalContainer: {
+      zIndex: 2, // Lower zIndex since this modal appears beneath the card selection modal
+    },
+    cardModalContainer: {
+      zIndex: 1, // Higher zIndex to ensure this modal appears above the type selection modal
+    },
     
   });
 

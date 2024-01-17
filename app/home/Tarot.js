@@ -69,7 +69,6 @@ const drawCard = (index) => {
   const cardKey = `card${index + 1}`;
   if (selectedCardRef.current) {
     // Deal the selected card
-    console.log('we are dealing the selected card '+ selectedCardRef.current.name)
     setDrawnCards(prevDrawnCards => ({
       ...prevDrawnCards,
       [cardKey]: { ...selectedCardRef.current }
@@ -135,7 +134,7 @@ const drawCard = (index) => {
   const onDropZoneLayout = (event, index) => {
     const { x, y, width, height } = event.nativeEvent.layout;
     const offsetY = containerLayout.y;
-    console.log(`Drop Zone ${index}: x=${x}, y=${y}, width=${width}, height=${height}`);
+    //console.log(`Drop Zone ${index}: x=${x}, y=${y}, width=${width}, height=${height}`);
     // Ensure the array at this index is defined
     if (!dropZoneLayouts[index]) {
       dropZoneLayouts[index] = {};
@@ -147,7 +146,7 @@ const drawCard = (index) => {
   const onContainerLayout = (event) => {
     const { x, y, width, height } = event.nativeEvent.layout;
     setContainerLayout({ x, y, width, height });
-    console.log("Container layout: ", { x, y, width, height });
+    //console.log("Container layout: ", { x, y, width, height });
   };
 
    // Function to render meanings for each drawn card
@@ -299,7 +298,7 @@ const drawCard = (index) => {
             <Image
               source={drawnCards[key].image}
               placeholder={backofCards}
-              transition={1000}
+              transition={500}
               alt={drawnCards[key].name}
               style={drawnCards[key].reversed ? [styles.cardImage, reversedCardStyle] : styles.cardImage}
             />
@@ -313,7 +312,7 @@ const drawCard = (index) => {
     ) : (
       hasCardBeenDealt[key] ? (
         <View style={styles.cardImageContainer}>
-        <Image source={backofCards} style={styles.cardImage} />
+        <Image source={backofCards}  placeholder={backofCards} style={styles.cardImage} />
         </View>
       ) : (
         <Text>Drop here</Text>
