@@ -9,7 +9,7 @@ import tarotCards from '../../data/tarotCards';
 import backofCards from "../../assets/decks/riderTarot/BackofDeck.svg";
 
 //Imports for card selection modals
-import TarotCardTypeSelectionModal from '../../components/TarotCardTypeSelectionModal';
+import TarotCardSelectionModal from '../../components/TarotCardSelectionModal';
 
 const Tarot= () => {
   //Define drop area limits
@@ -363,7 +363,7 @@ const drawCard = (index) => {
         </TouchableOpacity>
       </View>
 
-      <TarotCardTypeSelectionModal
+      <TarotCardSelectionModal
         isVisible={isTypeModalVisible}
         onSelectType={handleTypeSelect}
         onClose={() => {setIsTypeModalVisible(false)}}
