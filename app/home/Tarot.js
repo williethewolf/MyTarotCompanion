@@ -7,7 +7,9 @@ import styles from '../../styles';
 //deck data and assets
 import tarotCards from '../../data/tarotCards';
 import backofCards from "../../assets/decks/riderTarot/BackofDeck.svg";
-import { SvgUri } from 'react-native-svg';
+
+//Imports for card selection modals
+import TarotCardTypeSelectionModal from '../../components/TarotCardTypeSelectionModal';
 
 const Tarot= () => {
   //Define drop area limits
@@ -28,12 +30,19 @@ const Tarot= () => {
   const nextZoneRef = useRef(0);
   //Card scaling animation WIP
 
-  //makign the transition between cards cleaner and smoother
+  //making the transition between cards cleaner and smoother
   const [hasCardBeenDealt, setHasCardBeenDealt] = useState({
     card1: false,
     card2: false,
     card3: false
   });
+
+
+  //Card selection modal states and hooks
+  // Ref to keep track of the latest selectedCardForDealing
+  const selectedCardRef = useRef(selectedCardForDealing);
+  const [isTypeModalVisible, setIsTypeModalVisible] = useState(false);
+  const [selectedCardForDealing, setSelectedCardForDealing] = useState(null);
   
 
   //DECK OPERATIONS
@@ -51,7 +60,27 @@ const Tarot= () => {
     shuffleDeck();  // Shuffle the deck when the component mounts so cards are randomized from the start
 }, []);
   
-  const drawCard = (index) => {
+useEffect(() => {
+  selectedCardRef.current = selectedCardForDealing;
+}, [selectedCardForDealing]);
+
+
+const drawCard = (index) => {
+  const cardKey = `card${index + 1}`;
+  if (selectedCardRef.current) {
+    // Deal the selected card
+    console.log('we are dealing the selected card '+ selectedCardRef.current.name)
+    setDrawnCards(prevDrawnCards => ({
+      ...prevDrawnCards,
+      [cardKey]: { ...selectedCardRef.current }
+    }));
+    // Remove the dealt card from the deck
+    //I DONT THINK THIS IS THE RIGHT WAY, WE Cant modify the current deck which is why we were using an index. Best we we can do is store the index and ignore it.
+    //currentDeck.current = currentDeck.current.filter(c => c.name !== selectedCardForDealing.name);
+    // Reset the selected card
+    setSelectedCardForDealing(null);
+  } else {
+    // Draw a card from the deck normally
     if (currentDeck.current.length === 0) {
       setIsDeckEmpty(true);
       setShowEmptyDeckMessage(true);
@@ -59,8 +88,6 @@ const Tarot= () => {
       return;
     }
     
-    //const card = { ...currentDeck.current.shift(), reversed: Math.random() < 0.5 };
-    const cardKey = `card${index + 1}`;
     setHasCardBeenDealt(prevState => ({ ...prevState, [cardKey]: true }));
     setDrawnCards(prevDrawnCards => ({
       ...prevDrawnCards,
@@ -68,22 +95,30 @@ const Tarot= () => {
     }));
 
     const newCard = { ...currentDeck.current.shift(), reversed: Math.random() < 0.5 };
-    setTimeout(() => {  // Set the new card after a brief delay
-        setDrawnCards(prevDrawnCards => ({
-            ...prevDrawnCards,
-            [cardKey]: newCard
-        }));
+    setTimeout(() => { // Set the new card after a brief delay
+      setDrawnCards(prevDrawnCards => ({
+        ...prevDrawnCards,
+        [cardKey]: newCard
+      }));
     }, 100);
-  
-    if (currentDeck.current.length === 0) {
-      setIsDeckEmpty(true);
-    }
-  };
+  }
+  if (currentDeck.current.length === 0) {
+    setIsDeckEmpty(true);
+  }
+  // Reset the back of the card image -THIS IS NOT NEEDED IF ITS CALLED ABOVE IN LINE 77
+  //resetBackOfCardImage();
+};
+
+//THIS IS NOT NEEDED EITHER
+// const resetBackOfCardImage = () => {
+//   setSelectedCardForDealing(null)
+// };
 
   const resetDeck = () => {
     setDrawnCards({ card1: null, card2: null, card3: null });
     nextZoneRef.current=0;
     setIsDeckEmpty(false);
+    setSelectedCardForDealing(null)
     currentDeck.current=[...tarotCards];
     shuffleDeck()
 
@@ -146,6 +181,7 @@ const Tarot= () => {
   };
 
   const handleSwipeDown = () => {
+    setIsTypeModalVisible(true)
     pan.setValue({ x: 0, y: 0 });
     pan.flattenOffset();
     setIsDragging(false);
@@ -189,20 +225,22 @@ const Tarot= () => {
       onPanResponderRelease: (e, gestureState) => {
         const verticalMovement = Math.abs(gestureState.dy);
         const verticalVelocity = Math.abs(gestureState.vy);
-        const { dy } = gestureState;
+        const { dy, dx, vy } = gestureState;
         const swipeThreshold = 50;
   
         // Define thresholds
         const swipeDistanceThreshold = 50; // Adjust as needed
-        const swipeVelocityThreshold = 0.5; // Adjust as needed
+        const swipeVelocityThreshold = 0.3; // Adjust as needed
         const tapDistanceThreshold = 5; // Adjust as needed
   
-        if (dy < -swipeThreshold) {
-          // Upward swipe
-          handleSwipeUp();
-        } else if (dy > swipeThreshold) {
-          // Downward swipe
-           handleSwipeDown();
+        if (verticalMovement > swipeDistanceThreshold && Math.abs(vy) > swipeVelocityThreshold) {
+          if (dy < 0) {
+            // Upward swipe
+            handleSwipeUp();
+          } else {
+            // Downward swipe
+            handleSwipeDown();
+          }
         } else if (verticalMovement < tapDistanceThreshold && Math.abs(gestureState.dx) < tapDistanceThreshold) {
           // It's a tap
           shuffleDeck();
@@ -229,6 +267,22 @@ const Tarot= () => {
     transform: [{ rotate: '180deg' }]
   }
 
+  //CARD SELECTOR MODALS AND LOGIC
+  const handleTypeSelect = (type) => {
+    setSelectedType(type);
+    //setIsTypeModalVisible(false);
+    setIsCardSelectionModalVisible(true);
+  };
+
+  const handleCardSelected = (card) => {
+    setSelectedCardForDealing(card);
+    // Close the modal and reset the view for the next time it opens
+    setIsTypeModalVisible(false);
+    // Remove the selected card from the deck - THIS IS MESSING IT UP! JUST TAKE IT OUT
+    //currentDeck.current = currentDeck.current.filter(c => c.name !== card.name);
+  };
+
+
   return (
     <View style={styles.container}>
     {/* Dealing Deck view */}
@@ -252,7 +306,7 @@ const Tarot= () => {
            
         {/* </View> */}
           <View style={styles.cardLabel}>
-            <Text style={{flex:1,flexWrap:'nowrap'}}>{drawnCards[key].name}</Text>
+            <Text style={{flex:1,flexWrap:'nowrap', fontSize:12}}>{drawnCards[key].name}</Text>
           </View>
         
         </View>
@@ -295,18 +349,30 @@ const Tarot= () => {
       {/* Draggable Card */}
       {!isDeckEmpty && (
         <Animated.View
-          {...panResponder.panHandlers}
-          style={[pan.getLayout(), styles.draggableCard, isDragging && styles.draggingCard]}
-        >
-          <Image source={backofCards} style={styles.cardBackImage} />
-        </Animated.View>
+        {...panResponder.panHandlers}
+        style={[pan.getLayout(), styles.draggableCard, isDragging && styles.draggingCard]}
+      >
+        <Image source={selectedCardForDealing ? selectedCardForDealing.image : backofCards} style={styles.cardBackImage} />
+      </Animated.View>
         )}
         </View>
+          <View style={styles.cardSelectionArea}>
       {/* Reset Button */}
         <TouchableOpacity onPress={resetDeck} style={styles.pillButton}>
           <Text style={styles.pillButtonText}>Read</Text>
         </TouchableOpacity>
       </View>
+
+      <TarotCardTypeSelectionModal
+        isVisible={isTypeModalVisible}
+        onSelectType={handleTypeSelect}
+        onClose={() => {setIsTypeModalVisible(false)}}
+        tarotCards={tarotCards}
+        onCardSelected={handleCardSelected}
+        style={styles.typeModalContainer}
+      />
+      </View>
+
     </View>
   );
 }
