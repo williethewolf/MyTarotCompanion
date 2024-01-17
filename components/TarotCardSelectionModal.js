@@ -1,4 +1,4 @@
-import React, {useState, useEffect } from 'react';
+import React, {useState, useEffect, useRef } from 'react';
 import { Modal, View, TouchableOpacity, ScrollView, Text, Image, Animated, StyleSheet } from 'react-native';
 
 import cupsSuitSmall from '../assets/decks/suitsIcons/cupsSuitSmall.png'
@@ -19,8 +19,12 @@ const TarotCardTypeSelectionModal = ({ isVisible, onClose, tarotCards, onCardSel
 
     const [selectedType, setSelectedType] = useState(null);
 
+    const scrollViewRef = useRef()
+
+
     const handleTypeSelect = (type) => {
         setSelectedType(type);
+        scrollViewRef.current?.scrollTo({x: 0, y: 0, animated: true})
       };
 
       const animationValues = {
@@ -98,7 +102,7 @@ const TarotCardTypeSelectionModal = ({ isVisible, onClose, tarotCards, onCardSel
       const renderCardSelection = () => {
         const cards = tarotCards.filter(card => card.type === selectedType);
         return (
-          <ScrollView horizontal style={styles.cardSelectionContainer}>
+          <ScrollView horizontal style={styles.cardSelectionContainer} ref={scrollViewRef}>
             {cards.map((card) => (
               <TouchableOpacity
                 key={card.name}
