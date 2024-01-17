@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Image } from 'expo-image';
 import { Modal, View, Text, TouchableOpacity, ScrollView, StyleSheet, Dimensions } from 'react-native';
 import CapitalizeFirst from '../utils/CapitalizeFirst';
+import StringParser from '../utils/StringParser';
 
 const StoneInfoModal =({ item, visible, onClose }) => {
     if (!item) return null;
@@ -25,7 +26,7 @@ const StoneInfoModal =({ item, visible, onClose }) => {
       > 
         <View style={styles.modalOverlay} onTouchEnd={onClose}>
             <View style={styles.modalContent} onTouchEnd={(e) => e.stopPropagation()}>
-                <Image source={{ uri: item.ImageURL }} style={styles.modalImage} placeholder={defaultImagePath} transition={500} alt={item.name} />
+                <Image source={ imageSource} style={styles.modalImage} placeholder={defaultImagePath} transition={500} alt={item.name} />
                 <Text style={styles.modalTitle}>{CapitalizeFirst(item.Name[0])}</Text>
                 <ScrollView style={styles.descriptionScroll} onStartShouldSetResponder={() => true}>
                     <Text style={styles.descriptionText}>{item.Description}</Text>
