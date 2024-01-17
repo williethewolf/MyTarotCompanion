@@ -251,10 +251,18 @@ const styles = StyleSheet.create({
       justifyContent: 'center', // Center text vertically
       color: '#006994',
       //borderWidth: 1,
+      fontSize: 12,
       marginTop: 10,
       //textAlign:"center",
       overflow: 'visible',
       //overflow: 'scroll'
+    },
+    cardLabel:{
+      width: '120%',
+      overflow: 'visible',
+      position: "absolute",
+      bottom:-20,
+      alignItems: 'center',
     }
     
   });

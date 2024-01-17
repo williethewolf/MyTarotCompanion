@@ -7,6 +7,7 @@ import styles from '../../styles';
 //deck data and assets
 import tarotCards from '../../data/tarotCards';
 import backofCards from "../../assets/decks/riderTarot/BackofDeck.svg";
+import { SvgUri } from 'react-native-svg';
 
 const Tarot= () => {
   //Define drop area limits
@@ -115,12 +116,12 @@ const Tarot= () => {
   };
 
    // Function to render meanings for each drawn card
-   const renderCardMeanings = (cardKey) => {
+  const renderCardMeanings = (cardKey) => {
     const card = drawnCards[cardKey];
     if (!card) {
       return (
       <View style={styles.cardMeaningsCard}>
-      <View style={[flex=0.3,width=95]}>
+      <View style={[flex=0.33,width=95]}>
           <Text></Text>
         </View>
       </View>
@@ -130,7 +131,7 @@ const Tarot= () => {
     return (
       <ScrollView style={styles.cardMeaningsCard}>
         {meanings.map((meaning, index) => (
-          <Text key={index} style={styles.cardMeaningText}>{meaning}</Text>
+          <Text key={index} style={[styles.cardMeaningText,flex=0.3]}>{meaning}</Text>
         ))}
       </ScrollView>
     );
@@ -143,6 +144,12 @@ const Tarot= () => {
     pan.flattenOffset();
     setIsDragging(false);
   };
+
+  const handleSwipeDown = () => {
+    pan.setValue({ x: 0, y: 0 });
+    pan.flattenOffset();
+    setIsDragging(false);
+  }
 
   const handleDragRelease = (gestureState) => {
     // Adjust dropY to be relative to the container
@@ -182,15 +189,20 @@ const Tarot= () => {
       onPanResponderRelease: (e, gestureState) => {
         const verticalMovement = Math.abs(gestureState.dy);
         const verticalVelocity = Math.abs(gestureState.vy);
+        const { dy } = gestureState;
+        const swipeThreshold = 50;
   
         // Define thresholds
         const swipeDistanceThreshold = 50; // Adjust as needed
         const swipeVelocityThreshold = 0.5; // Adjust as needed
         const tapDistanceThreshold = 5; // Adjust as needed
   
-        if (verticalMovement > swipeDistanceThreshold && verticalVelocity > swipeVelocityThreshold) {
-          // It's a swipe
+        if (dy < -swipeThreshold) {
+          // Upward swipe
           handleSwipeUp();
+        } else if (dy > swipeThreshold) {
+          // Downward swipe
+           handleSwipeDown();
         } else if (verticalMovement < tapDistanceThreshold && Math.abs(gestureState.dx) < tapDistanceThreshold) {
           // It's a tap
           shuffleDeck();
@@ -228,6 +240,7 @@ const Tarot= () => {
       {Object.keys(drawnCards).map((key, index) => (
         <View key={key} style={[styles.dropZone,]} onLayout={(e) => onDropZoneLayout(e, index)}>
          {drawnCards[key] ? (
+          // <View>
           <View style={styles.cardImageContainer}>
             <Image
               source={drawnCards[key].image}
@@ -236,6 +249,12 @@ const Tarot= () => {
               alt={drawnCards[key].name}
               style={drawnCards[key].reversed ? [styles.cardImage, reversedCardStyle] : styles.cardImage}
             />
+           
+        {/* </View> */}
+          <View style={styles.cardLabel}>
+            <Text style={{flex:1,flexWrap:'nowrap'}}>{drawnCards[key].name}</Text>
+          </View>
+        
         </View>
     ) : (
       hasCardBeenDealt[key] ? (
