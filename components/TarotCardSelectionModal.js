@@ -160,6 +160,16 @@ const styles = StyleSheet.create({
         justifyContent: 'center', // Center the image vertically
         borderWidth:2,
         borderColor: '#c4ae7e',
+         // Shadows for iOS
+        shadowColor: "#000",
+        shadowOffset: {
+          width: 0,
+          height: 2,
+        },
+        shadowOpacity: 0.25,
+        shadowRadius: 1,
+        // Elevation for Android
+        elevation: 4,
     },
     activeRoundButton: {
         width: 80,
@@ -172,6 +182,16 @@ const styles = StyleSheet.create({
         borderWidth: 2,
         borderColor: '#c4ae7e',
         transform: [{ translateY: -10 }],
+            // Shadows for iOS
+        shadowColor: "#000",
+        shadowOffset: {
+          width: 0,
+          height: 2,
+        },
+        shadowOpacity: 0.25,
+        shadowRadius: 1,
+        // Elevation for Android
+        elevation: 4,
     },
     buttonImage: {
         width: '100%', // Image takes the full space of the button
@@ -196,6 +216,16 @@ const styles = StyleSheet.create({
         aspectRatio : 1 /1.87,
         width:80,
         marginHorizontal: 5,
+         // Shadows for iOS
+         shadowColor: "#000",
+         shadowOffset: {
+           width: 0,
+           height: 2,
+         },
+         shadowOpacity: 0.25,
+         shadowRadius: 1,
+         // Elevation for Android
+         elevation: 4,
       },
       cardImage: {
         height: '100%',
@@ -218,6 +248,16 @@ const styles = StyleSheet.create({
         borderWidth:2,
         borderColor: '#c4ae7e',
         backgroundColor: '#c4ae7e',
+         // Shadows for iOS
+        shadowColor: "#000",
+        shadowOffset: {
+          width: 0,
+          height: 2,
+        },
+        shadowOpacity: 0.95,
+        shadowRadius: 0.2,
+        // Elevation for Android
+        elevation: 4,
     }
 });
 
