@@ -10,6 +10,9 @@ import backofCards from "../../assets/decks/riderTarot/BackofDeck.svg";
 
 //Imports for card selection modals
 import TarotCardSelectionModal from '../../components/TarotCardSelectionModal';
+//Import Card Details modal
+import TarotCardDetailsModal from '../../components/TarotCardDetailsModal';
+
 
 const Tarot= () => {
   //Define drop area limits
@@ -44,6 +47,9 @@ const Tarot= () => {
   const [isTypeModalVisible, setIsTypeModalVisible] = useState(false);
   const [selectedCardForDealing, setSelectedCardForDealing] = useState(null);
   
+  //Card Details modal states and stuff
+  const [selectedCardForDetail, setSelectedCardForDetail] = useState(null);
+  const [isCardDetailModalVisible, setIsCardDetailModalVisible] = useState(false);
 
   //DECK OPERATIONS
   const shuffleDeck = () => {
@@ -104,14 +110,9 @@ const drawCard = (index) => {
   if (currentDeck.current.length === 0) {
     setIsDeckEmpty(true);
   }
-  // Reset the back of the card image -THIS IS NOT NEEDED IF ITS CALLED ABOVE IN LINE 77
-  //resetBackOfCardImage();
 };
 
-//THIS IS NOT NEEDED EITHER
-// const resetBackOfCardImage = () => {
-//   setSelectedCardForDealing(null)
-// };
+
 
   const resetDeck = () => {
     setDrawnCards({ card1: null, card2: null, card3: null });
@@ -170,6 +171,32 @@ const drawCard = (index) => {
       </ScrollView>
     );
   };
+//Handle clicks on cards to open modal
+const onCardClick = (cardKey) => {
+  const card = drawnCards[cardKey];
+  if (card) {
+    setSelectedCardForDetail({ ...card, key: cardKey });
+    setIsCardDetailModalVisible(true);
+  }
+};
+
+//Reverse card action on modal
+const handleReverseCard = () => {
+  if (!selectedCardForDetail) return;
+
+  const updatedCard = {
+    ...selectedCardForDetail,
+    reversed: !selectedCardForDetail.reversed
+  };
+
+  setDrawnCards(prevDrawnCards => ({
+    ...prevDrawnCards,
+    [updatedCard.key]: updatedCard
+  }));
+
+  setSelectedCardForDetail(updatedCard);
+};
+
   //GESTURE INTERACTIONS
   const handleSwipeUp = () => {
     drawCard(nextZoneRef.current);
@@ -270,13 +297,13 @@ const drawCard = (index) => {
   const handleTypeSelect = (type) => {
     setSelectedType(type);
     //setIsTypeModalVisible(false);
-    setIsCardSelectionModalVisible(true);
+    //setIsCardSelectionModalVisible(true);
   };
 
   const handleCardSelected = (card) => {
     setSelectedCardForDealing(card);
     // Close the modal and reset the view for the next time it opens
-    setIsTypeModalVisible(false);
+    //setIsTypeModalVisible(false);
     // Remove the selected card from the deck - THIS IS MESSING IT UP! JUST TAKE IT OUT
     //currentDeck.current = currentDeck.current.filter(c => c.name !== card.name);
   };
@@ -295,6 +322,9 @@ const drawCard = (index) => {
          {drawnCards[key] ? (
           // <View>
           <View style={styles.cardImageContainer}>
+            <TouchableOpacity
+              onPress={()=>onCardClick(key)}
+            >
             <Image
               source={drawnCards[key].image}
               placeholder={backofCards}
@@ -302,7 +332,7 @@ const drawCard = (index) => {
               alt={drawnCards[key].name}
               style={drawnCards[key].reversed ? [styles.cardImage, reversedCardStyle] : styles.cardImage}
             />
-           
+           </TouchableOpacity>
         {/* </View> */}
           <View style={styles.cardLabel}>
             <Text style={{flex:1,flexWrap:'nowrap', fontSize:12}}>{drawnCards[key].name}</Text>
@@ -320,6 +350,13 @@ const drawCard = (index) => {
     )}
         </View>
       ))}
+      <TarotCardDetailsModal
+        isVisible={isCardDetailModalVisible}
+        card={selectedCardForDetail}
+        initialReversedState={selectedCardForDetail?.reversed}
+        onClose={() => setIsCardDetailModalVisible(false)}
+        onReverse={handleReverseCard}
+      />
     </View>
     <View style = {styles.threeTarotSpreadLables}>
         <Text style = {styles.threeTarotSpreadLable}>Past</Text>
