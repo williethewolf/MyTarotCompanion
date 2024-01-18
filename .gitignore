@@ -42,3 +42,9 @@ firebaseConfig.js
 
 #DB and DATA
 /data
+
+#Stones asset that will come from server
+/assets/stones/
+
+#Tarot decks images
+/assets/decks/
