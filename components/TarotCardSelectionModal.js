@@ -124,7 +124,7 @@ const TarotCardTypeSelectionModal = ({ isVisible, onClose, tarotCards, onCardSel
       };
 
       return (
-        <Modal transparent visible={isVisible}>
+        <Modal transparent visible={isVisible} onRequestClose={() => {onClose(); setSelectedType(null);}}>
             <View style={styles.modalContainer}>
                 {'cardSelection' && renderCardSelection()}
                 {renderTypeSelection()}
