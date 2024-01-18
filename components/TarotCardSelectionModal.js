@@ -79,14 +79,16 @@ const TarotCardTypeSelectionModal = ({ isVisible, onClose, tarotCards, onCardSel
             {/* Row for type buttons */}
             <View style={styles.buttonRow}>
               {['cups', 'wands', 'major arcana', 'swords', 'pentacles'].map((type) => (
+                <Animated.View style={[styles.roundButtonContent, getButtonStyle(type)]}>
                 <TouchableOpacity
                     key={type}
                     onPress={() => handleTypeSelect(type)}
+                    style={[styles.roundButton]}
                 >
-                <Animated.View style={[styles.roundButton, getButtonStyle(type)]}>
+                
                     <Image source={typeToImageMap[type]} style={styles.buttonImage} />
-                </Animated.View>
                 </TouchableOpacity>
+                </Animated.View>
               ))}
             </View>
       
@@ -103,6 +105,7 @@ const TarotCardTypeSelectionModal = ({ isVisible, onClose, tarotCards, onCardSel
         const cards = tarotCards.filter(card => card.type === selectedType);
         return (
           <ScrollView horizontal style={styles.cardSelectionContainer} ref={scrollViewRef}>
+            <View style={{flexDirection:'row', margin:15}}>
             {cards.map((card) => (
               <TouchableOpacity
                 key={card.name}
@@ -115,10 +118,11 @@ const TarotCardTypeSelectionModal = ({ isVisible, onClose, tarotCards, onCardSel
               >
                 <Image source={card.image} style={styles.cardImage} />
                 <View style={{ flex:1, alignItems: 'center' }}>
-                  <Text style={{ fontSize: 12, textAlign: 'center' }}>{card.name}</Text>
+                  <Text style={{ fontSize: 12, textAlign: 'center', paddingBottom:-25 }}>{card.name}</Text>
                 </View>
               </TouchableOpacity>
             ))}
+            </View>
           </ScrollView>
         );
       };
@@ -153,6 +157,7 @@ const styles = StyleSheet.create({
     roundButton: {
         width: 70, // Increase size for better visibility and touch
         height: 70,
+        backgroundColor:'white',
         borderRadius: 45, // Half of width/height to make it round
         margin: 5, // Space between buttons
         overflow: 'hidden', // To make sure the image respects the border radius
@@ -171,14 +176,36 @@ const styles = StyleSheet.create({
         // Elevation for Android
         elevation: 4,
     },
+    roundButtonContent: {
+        width: 70, // Increase size for better visibility and touch
+        height: 70,
+        backgroundColor:'white',
+        borderRadius: 45, // Half of width/height to make it round
+        overflow: 'hidden', // To make sure the image respects the border radius
+        alignItems: 'center', // Center the image horizontally
+        justifyContent: 'center', // Center the image vertically
+        margin: 5,
+          // Shadows for iOS
+          shadowColor: "#000",
+          shadowOffset: {
+            width: 0,
+            height: 2,
+          },
+          shadowOpacity: 0.25,
+          shadowRadius: 3.85,
+          // Elevation for Android
+          elevation: 8,
+
+    },
     activeRoundButton: {
         width: 80,
         height: 80,
-        borderRadius: 50,
+        borderRadius: 40,
         margin: 5,
         overflow: 'hidden',
         alignItems: 'center',
         justifyContent: 'center',
+        backgroundColor:'white',
         borderWidth: 2,
         borderColor: '#c4ae7e',
         transform: [{ translateY: -10 }],
@@ -189,14 +216,14 @@ const styles = StyleSheet.create({
           height: 2,
         },
         shadowOpacity: 0.25,
-        shadowRadius: 1,
+        shadowRadius: 3.85,
         // Elevation for Android
-        elevation: 4,
+        elevation: 8,
     },
     buttonImage: {
         width: '100%', // Image takes the full space of the button
         height: '100%', // Maintain aspect ratio
-        borderRadius: 25 // Make image round
+        borderRadius: 50 // Make image round
     },
     buttonRow: {
         flexDirection: 'row', // Align type buttons horizontally
@@ -209,12 +236,15 @@ const styles = StyleSheet.create({
     cardSelectionContainer: {
         flex:1,
         flexDirection: 'row',
-        paddingVertical: 10,
+        //paddingVertical: 10,
       },
       cardTouchable: {
+        backgroundColor:'white',
         flex:1,
-        aspectRatio : 1 /1.87,
-        width:80,
+        //aspectRatio : 1 /1.87,
+        height:210,
+        width: 120,
+        borderRadius:8,
         marginHorizontal: 5,
          // Shadows for iOS
          shadowColor: "#000",
@@ -225,12 +255,13 @@ const styles = StyleSheet.create({
          shadowOpacity: 0.25,
          shadowRadius: 1,
          // Elevation for Android
-         elevation: 4,
+         elevation: 6,
       },
       cardImage: {
-        height: '100%',
+        height: '85%',
         width: '100%',
         resizeMode: 'contain',
+        marginTop:10
       },
       modalContent: {
         flex: 1,
@@ -257,7 +288,7 @@ const styles = StyleSheet.create({
         shadowOpacity: 0.95,
         shadowRadius: 0.2,
         // Elevation for Android
-        elevation: 4,
+        elevation: 2,
     }
 });
 
