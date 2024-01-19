@@ -4,7 +4,6 @@ import { Stack } from 'expo-router'
 import HamburgerMenu from '../../components/HamburgerMenu'
 import StyledTitle from '../../components/StyledTitle'
 import NavigationMenuButton from '../../components/NavigationMenuButton'
-import styles from '../../styles'
 import { PieMenuProvider } from '../../Context';
 import PieMenuOverlay from '../../components/PieMenuOverlay'
 

@@ -1,6 +1,13 @@
 import React, {useRef, useEffect, useState} from 'react';
 import { Modal, View, TouchableOpacity, Text, Animated, Image, StyleSheet, ScrollView } from 'react-native';
 import Markdown from 'react-native-markdown-display';
+import metrics from '../utils/Metrics';
+
+const scaleSize = (size) => (metrics.screenWidth / 375) * size;
+
+const isTablet = metrics.screenWidth >= 768;
+
+
 
 const TarotCardDetailsModal = ({ isVisible, card, onClose, onReverse, }) => {
   if (!card) return null;
@@ -64,11 +71,16 @@ const TarotCardDetailsModal = ({ isVisible, card, onClose, onReverse, }) => {
   // Get the meanings based on the reversed state
   const meanings = isReversed ? card.reversedMeaning : card.meaning;
 
+  //tabletstyling
+  const cardImageWithTabletStyle = isTablet
+    ? { ...styles.cardImage, width: scaleSize(155),}
+    : { ...styles.cardImage};
+
   return (
     <Modal transparent visible={isVisible} onRequestClose={onClose}>
       <View style={styles.modalContainer}>
         <Animated.View style={[styles.cardContainer, reverseCardContainerStyle]}>
-          <Image source={card.image} style={styles.cardImage} />
+          <Image source={card.image} style={cardImageWithTabletStyle} />
         </Animated.View>
         <TouchableOpacity style={styles.reverseButton} onPress={handleReverseButtonPress}>
           <Text style={styles.buttonText}>Reverse</Text>
@@ -89,7 +101,7 @@ const TarotCardDetailsModal = ({ isVisible, card, onClose, onReverse, }) => {
 
         <ScrollView style={styles.descriptionContainer}>
           <View style={styles.descriptionText}>
-          <Markdown >{card.description}</Markdown>
+          <Markdown style={{body: {fontSize: isTablet ? scaleSize(10) : scaleSize(12)}}} >{card.description}</Markdown>
           </View>
         </ScrollView>
       </View>
@@ -105,11 +117,11 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(0, 0, 0, 0.5)',
   },
   cardImage: {
-    //width: 340,
+    //width: isTablet ? scaleSize(155) : '', 
     //height: 510,
     height:'100%',
     resizeMode: 'contain',
-    marginHorizontal:-15,
+    marginHorizontal:isTablet ? 15 : -scaleSize(17),
   },
   cardImageReversed: {
     //width: 300,
@@ -118,11 +130,11 @@ const styles = StyleSheet.create({
     transform: [{ rotate: '180deg' }],
   },
   cardContainer: {
-    marginTop:30,
+    marginTop:isTablet ? scaleSize(15) : scaleSize(30),
     flex:3,
-    margin: -20,
-    paddingVertical:12,
-    borderRadius: 20,
+    margin: isTablet ? -scaleSize(20) : -scaleSize(20),
+    paddingVertical:scaleSize(12),
+    borderRadius: scaleSize(10),
     backgroundColor: 'white',
     // Shadows for iOS
     shadowColor: "#000",
@@ -137,10 +149,10 @@ const styles = StyleSheet.create({
   },
   reverseButton: {
     alignSelf: 'center',
-    bottom: 10, // Adjust this value as needed for overlap
+    bottom: scaleSize(0), // Adjust this value as needed for overlap
     backgroundColor: '#c4ae7e',
-    padding: 10,
-    borderRadius: 30,
+    padding: scaleSize(8),
+    borderRadius: scaleSize(30),
     // Add shadow to the button for more depth
     shadowColor: "#000",
     shadowOffset: {
@@ -153,12 +165,14 @@ const styles = StyleSheet.create({
   },
   buttonText: {
     color: 'white',
+    fontSize: isTablet ? scaleSize(10) : scaleSize(12),
   },
   meaningsContainer: {
     width: '95%',
-    maxHeight: 30,
-    marginTop: 5, // Add some margin at the top for spacing
+    maxHeight: scaleSize(30),
+    marginTop: scaleSize(5), // Add some margin at the top for spacing
   },
+
   meaningsContentContainer: {
     flexDirection: 'row',
     justifyContent: 'center', // Center the content horizontally
@@ -167,33 +181,34 @@ const styles = StyleSheet.create({
   },
   meaningItem: {
     //bottom:50,
-    marginHorizontal: 10, // Add horizontal margin for spacing between items
+    marginHorizontal: scaleSize(10), // Add horizontal margin for spacing between items
     backgroundColor: '#f5e5ba', // Button color
-    paddingHorizontal: 6, // Horizontal padding
-    paddingVertical: 4,
-    borderRadius: 60, // Rounded corners
+    paddingHorizontal: scaleSize(6), // Horizontal padding
+    paddingVertical: scaleSize(4),
+    borderRadius: scaleSize(60), // Rounded corners
     color: '#006994', // Text color
-    fontSize: 12, // Font size
+    fontSize: scaleSize(12), // Font size
     overflow: 'hidden', // Prevents content from spilling outside the borders
   },
   meaningText: {
     color: '#006994', // Text color
     textAlign: 'center', // Center text
+    fontSize: scaleSize(10),
   },
   descriptionContainer: {
     width: '95%',
-    maxHeight: 225, // Set a fixed maximum height
+    maxHeight: isTablet ? scaleSize(140) : scaleSize(225), // Set a fixed maximum height
     backgroundColor: '#f8f8f8', // Background color of the text area
-    marginVertical: 10, // Vertical spacing
-    padding: 10, // Padding inside the text area
-    borderRadius: 30,
-    padding:10,
-    paddingBottom:40,
+    marginVertical: scaleSize(10), // Vertical spacing
+    padding: scaleSize(10), // Padding inside the text area
+    borderRadius: scaleSize(20),
+    padding:scaleSize(10),
+    paddingBottom:scaleSize(40),
   },
   descriptionText: {
-    padding:10,
-    paddingBottom:25,
-    fontSize: 16, // Font size of the description text
+    padding:scaleSize(10),
+    paddingBottom:scaleSize(25),
+    fontSize: scaleSize(16), // Font size of the description text
     color: '#333', // Text color
     //Add any additional text styling here
   },

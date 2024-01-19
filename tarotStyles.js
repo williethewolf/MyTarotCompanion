@@ -1,6 +1,13 @@
 import { StyleSheet } from 'react-native';
+import metrics from './utils/Metrics';
 //UPDATE IF UPDATED IN APP.JS!!!!
-const CARD_SLOT_SIZE = 100; 
+const CARD_SLOT_SIZE = 100;
+
+//Responsive calculations
+
+const scaleSize = (size) => (metrics.screenWidth / 375) * size;
+
+const isTablet = metrics.screenWidth >= 768;
 
 const styles = StyleSheet.create({
     container: {
@@ -8,13 +15,13 @@ const styles = StyleSheet.create({
         backgroundColor: '#FFFCF0',
         alignItems: 'center',
         //justifyContent: 'space-around',
-        padding:10,
+        padding: scaleSize(10),
         position: 'relative'
       },
     //card styles
     card: {
         // Style for the card that will be dragged
-        width: '60%', // Set a fixed width or base it on the screen size
+        width: isTablet ? '70%' : '60%', // Set a fixed width or base it on the screen size
         aspectRatio : 1 /1.87, // Height based on the aspect ratio of a tarot card
         backgroundColor: '#fff', // Adjust as needed
         justifyContent: 'center',
@@ -30,11 +37,11 @@ const styles = StyleSheet.create({
         // Additional styles to apply when the card is being dragged
         opacity: 0.8, // Slightly transparent while dragging
         transform: [{ scale: 1.1 }], // Optional: Slightly increase the size when dragging
-        zIndex:10000
+        zIndex:10000,
       },
       draggableCard: {
         width: '86%', // Set a fixed width or base it on the screen size
-        maxWidth:300,
+        maxWidth: scaleSize(300),
         aspectRatio : 1 /1.87, // Height based on the aspect ratio of a tarot card
         //backgroundColor: '#fff', // Adjust as needed
         //justifyContent: 'center',
@@ -46,19 +53,21 @@ const styles = StyleSheet.create({
         elevation: 3, // For Android
         position: 'absolute', // Important for positioning the card freely
         //left: '50%',
-        marginLeft: 15,
+        marginLeft: scaleSize(9),
+        marginTop: isTablet ? scaleSize(50) : scaleSize(-5),
         //marginTop: 2, 
       },
       topDeckCard: {
         width: '85%',
-        maxWidth: 300,
+        maxWidth: scaleSize(300),
         aspectRatio : 1 /1.87,
         backgroundColor: 'skyblue',
         justifyContent: 'center',
         alignItems: 'center',
-        borderRadius: 5,
-        borderWidth: 1,
+        borderRadius: scaleSize(5),
+        borderWidth: scaleSize(1),
         borderColor: 'black',
+        bottom: isTablet? -120 : scaleSize(4)
       },
       cardPlaceholder: {
         width: '100%',
@@ -67,7 +76,7 @@ const styles = StyleSheet.create({
       dropZone: {
         width: '30%',
         aspectRatio : 1 /1.7,
-        margin: 10,
+        margin: scaleSize(10),
         borderColor: '#2c3252',
         borderWidth: 0.5,
         //opacity: 0.5,
@@ -91,7 +100,7 @@ const styles = StyleSheet.create({
         
       },
       cardImageContainer:{
-        borderRadius: 5,
+        borderRadius: scaleSize(5),
         //margin:10,
         backgroundColor:'white',
         width: '100%',
@@ -108,8 +117,8 @@ const styles = StyleSheet.create({
     cardContainer: {
         width: '25%',
         aspectRatio : 1 /1.87, // Height based on the aspect ratio of a tarot card
-        maxWidth: 100,
-        borderRadius: 5, // Optional, for slightly rounded corners
+        maxWidth: scaleSize(100),
+        borderRadius: scaleSize(5),
         // Additional styling to make it look more like a deck of cards
         shadowColor: '#000',
         //backgroundColor: 'red',
@@ -121,12 +130,12 @@ const styles = StyleSheet.create({
      },
        
     shuffleButton: {
-        width: 100, // Width of the button
+      width: scaleSize(100), // Width of the button
         aspectRatio : 1 /1.87, // Height based on the aspect ratio of a tarot card
         backgroundColor: '#E0E0E0', // A neutral color, change as needed
         justifyContent: 'center',
         alignItems: 'center',
-        borderRadius: 5, // Optional, for slightly rounded corners
+        borderRadius: scaleSize(5),
         // Additional styling to make it look more like a deck of cards
         borderWidth: 2,
         borderColor: '#9E9E9E',
@@ -138,7 +147,7 @@ const styles = StyleSheet.create({
       },
     shuffleButtonText: {
         color: '#000', // Text color
-        fontSize: 16, // Adjust as needed
+        fontSize: scaleSize(16), // Adjust as needed
         fontWeight: 'bold',
     },
     disabledButton: {
@@ -155,7 +164,7 @@ const styles = StyleSheet.create({
     dropZoneLabel: {
       position: 'absolute',
       color: 'black',
-      fontSize: 12,
+      fontSize: scaleSize(12),
       flex: 1, 
       flexWrap: 'wrap',
       borderWidth: 2,
@@ -166,12 +175,12 @@ const styles = StyleSheet.create({
       //justifyContent: 'center',
       width:'45%',
       alignItems: 'center',
-      maxWidth:300,
+      maxWidth: scaleSize(300),
+      //bottom:-33,
     },
     deckControls: {
-      flex: 1,
-      height: 85,
-      width:'85%',
+      width: '85%',
+      height: scaleSize(55),
       flexDirection: 'row',
       justifyContent: 'space-between',
       alignItems: 'center',
@@ -179,7 +188,8 @@ const styles = StyleSheet.create({
       // borderWidth:0.5,
       // borderColor: '#c4ae7e',
       // //paddingHorizontal: 100,
-      left:6, 
+      left: '4%', 
+      right: '4%',
       bottom: 0,
       // //maxWidth: '90%', // Adjust as needed
       // alignSelf: 'center',
@@ -188,9 +198,9 @@ const styles = StyleSheet.create({
     pillButton: {
       
       backgroundColor: '#f5e5ba', // Button color
-      paddingHorizontal: '12%', // Horizontal padding - it was 20
-      paddingVertical: 10, // Vertical padding
-      borderRadius: 30, // Half of your button height to create a pill shape
+      paddingHorizontal: scaleSize(35),
+      paddingVertical: scaleSize(10),
+      borderRadius: scaleSize(30),
       borderWidth: 2, // Border width
       borderColor: '#c4ae7e', // Border color
       alignItems: 'center', // Center text horizontally
@@ -199,7 +209,7 @@ const styles = StyleSheet.create({
 
     pillButtonText: {
       color: '#142637', // Text color
-      fontSize: 16, // Text font size
+      fontSize: scaleSize(13), // Text font size
       fontWeight: 'bold', // Text weight
     },
 
@@ -209,8 +219,8 @@ const styles = StyleSheet.create({
       //flex:3,
       //justifyContent: 'space-between',
       //alignItems: 'center',
-      width:'90%',
-      gap:25
+      width:'87%',
+      gap:scaleSize(25)
     },
 
     threeTarotSpreadLable: {
@@ -218,18 +228,19 @@ const styles = StyleSheet.create({
       //flexDirection: 'row',
       borderColor: '#c4ae7e',
       borderWidth: 1,
-      marginTop: 10,
+      marginTop: scaleSize(10),
       textAlign:"center",
+      fontSize: scaleSize(10),
       //justifyContent: 'space-between',
       //paddingHorizontal: 20,
       //alignItems: 'center',
     },
 
     cardMeaningsContainer: {
-      width: '95%',
+      width: '92%',
       flexDirection: 'row',
       justifyContent: 'space-between',
-      gap:25,
+      gap: scaleSize(25),
       //marginHorizontal:5,
     },
 
@@ -242,17 +253,17 @@ const styles = StyleSheet.create({
 
     cardMeaningText:{
       backgroundColor: '#f5e5ba', // Button color
-      paddingHorizontal: 6, // Horizontal padding
-      paddingVertical: 2, // Vertical padding
-      borderRadius: 6, // Half of your button height to create a pill shape
+      paddingHorizontal: scaleSize(6),
+      paddingVertical: scaleSize(2),
+      borderRadius: scaleSize(6),
       //borderWidth: 2, // Border width
       //borderColor: '#c4ae7e', // Border color
       alignItems: 'center', // Center text horizontally
       justifyContent: 'center', // Center text vertically
       color: '#006994',
       //borderWidth: 1,
-      fontSize: 12,
-      marginTop: 10,
+      fontSize: scaleSize(10),
+      marginTop: scaleSize(5),
       //textAlign:"center",
       overflow: 'visible',
       //overflow: 'scroll'
@@ -261,10 +272,13 @@ const styles = StyleSheet.create({
       width: '125%',
       overflow: 'visible',
       position: "absolute",
-      bottom:-20,
+      bottom: -scaleSize(18),
       alignItems: 'center',
+      fontSize: scaleSize(16),
     },
-
+    cardLabelText: {
+      fontSize: scaleSize(10),
+  },
     cardSelectionArea:{
       //width:10
     },

@@ -21,7 +21,7 @@ export const PieMenuProvider = ({ children }) => {
   return (
     <PieMenuContext.Provider value={{ pieMenu, showPieMenu, hidePieMenu, buttonPosition, setButtonPosition, hidePieMenuAfterAnimation }}>
       {children}
-      {pieMenu.visible && <PieMenuOverlay />}
+      {pieMenu.visible && <PieMenuOverlay hidePieMenu={hidePieMenuAfterAnimation} />}
     </PieMenuContext.Provider>
   );
 };

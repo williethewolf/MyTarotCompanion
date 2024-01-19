@@ -3,10 +3,15 @@ import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { Link } from 'expo-router';
 import { PieMenuContext } from '../Context'
 import PieSlice from './PieSlice'; // Import the PieSlice component
+import metrics from '../utils/Metrics';
+
+const scaleSize = (size) => (metrics.screenWidth / 375) * size;
+
+const isTablet = metrics.screenWidth >= 768;
 
 const NavigationMenuButton = () => {
     const buttonRef = useRef(null);
-    const { showPieMenu, setButtonPosition } = useContext(PieMenuContext);
+    const { showPieMenu, setButtonPosition, hidePieMenuAfterAnimation } = useContext(PieMenuContext);
 
     
     const handlePress = () => {
@@ -15,9 +20,13 @@ const NavigationMenuButton = () => {
           // Measure the position and size of the button
           buttonRef.current.measure((fx, fy, width, height, px, py) => {
             //console.log('Measured position:', { fx, fy, width, height, px, py });
+            const pieMenuDiameter = scaleSize(300)
+
+            const pieMenuX = px + width / 2 - pieMenuDiameter / (isTablet ? scaleSize(1.05) : scaleSize(7.5));
+            const pieMenuY = py + height / 2 - pieMenuDiameter / (isTablet ? scaleSize(0.91) : scaleSize(3.5));
       
             // Set the position of the button for the pie menu
-            setButtonPosition({ x: px, y: py, width, height });
+            setButtonPosition({ x: scaleSize(px), y: scaleSize(py), width, height });
       
             // Define the slices and actions for the pie menu
             const slices = [
@@ -37,7 +46,7 @@ const NavigationMenuButton = () => {
       
             // Define the pie menu content
             const pieMenuContent = (
-              <View style={styles.pieMenu}>
+              <View style={[styles.pieMenu,  { top: pieMenuY, left: pieMenuX, width: pieMenuDiameter, height: pieMenuDiameter }]}>
                 {slices.map((slice, index) => (
                   <PieSlice
                     key={index}
@@ -53,7 +62,7 @@ const NavigationMenuButton = () => {
             );
       
             // Show the pie menu with the defined content
-            showPieMenu(pieMenuContent);
+            showPieMenu(pieMenuContent, hidePieMenuAfterAnimation);
           });
         } else {
           console.log('Ref not attached to button');
@@ -72,11 +81,11 @@ export default NavigationMenuButton;
   
   const styles = StyleSheet.create({
     roundButton: {
-      width: 30,
-      height: 30,
+      width: scaleSize(30),
+      height: scaleSize(30),
       borderWidth: 2,
       borderColor: '#142637',
-      borderRadius: 15,
+      borderRadius: scaleSize(15),
       backgroundColor: '#161a29',
       alignItems: 'center',
       justifyContent: 'center',
@@ -84,11 +93,15 @@ export default NavigationMenuButton;
     },
     rightMenuButton: {
       color: 'white',
-      fontSize: 24,
-      lineHeight: 28.5,
+      fontSize: scaleSize(24),
+      lineHeight: isTablet ? scaleSize(30) : scaleSize(28.5),
       zIndex: 1000
     },
     pieMenu: {
+      position: 'absolute',
+      borderRadius: scaleSize(75), // Half of pieMenuDiameter
+      overflow: 'hidden',
+
       // position: 'absolute',
       // width: 200, // Define the size of the pie menu
       // height: 200, // Define the size of the pie menu
@@ -102,9 +115,9 @@ export default NavigationMenuButton;
     },
     pieSlice: {
       zIndex: 801,
-      borderWidth: 30,
+      borderWidth: scaleSize(30),
       borderColor: '#c4ae7e',
-      borderRadius: 50,
+      borderRadius: scaleSize(50),
       
       // Styles for each pie slice
     },

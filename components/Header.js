@@ -3,6 +3,10 @@ import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 
 import HamburgerMenu from './HamburgerMenu';
 
+import metrics from '../utils/Metrics';
+
+const scaleSize = (size) => (metrics.screenWidth / 375) * size;
+
 const Header = () => {
   return (
     <View style={styles.headerContainer}>
@@ -33,10 +37,10 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    padding: 10,
+    padding: scaleSize(10),
     backgroundColor: '#FFFCF0',
-    borderTopWidth:0.5,
-    borderBottomWidth:0.2,
+    borderTopWidth:scaleSize(0.5),
+    borderBottomWidth:scaleSize(0.2),
     borderColor: '#c4ae7e',
     // Add any additional styling if needed
   },
@@ -46,17 +50,17 @@ const styles = StyleSheet.create({
 
   rightArrow:{
     color: '#c4ae7e',
-    fontSize:34,
-    lineHeight:30,
+    fontSize:scaleSize(34),
+    lineHeight:scaleSize(30),
     position: 'relative',
-    left: 26
+    left: scaleSize(26)
   },
   leftArrow:{
     color: '#c4ae7e',
-    fontSize:34,
-    lineHeight:30,
+    fontSize:scaleSize(34),
+    lineHeight:scaleSize(30),
     position: 'relative',
-    left: -26
+    left: scaleSize(-26)
   },
   titleContainer: {
     // Styling for the title container with filigree
@@ -64,27 +68,27 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     //alignItems: 'center',
     borderColor: '#c4ae7e',
-        borderWidth: 1,
+        borderWidth: scaleSize(1),
         borderTopWidth: 0,
         //borderStyle: 'dashed',
-    paddingHorizontal: 5,
+    paddingHorizontal: scaleSize(5),
   },
   titleText: {
-    fontSize: 20,
+    fontSize: scaleSize(20),
     color: '#1f2436'
     // Other styling for the title
   },
   rightMenuButton:{
     color: 'white',
-    fontSize: 24,
-    lineHeight:28.5,
+    fontSize: scaleSize(24),
+    lineHeight:scaleSize(28.5),
   },
   roundButton: {
-    width: 30,
-    height: 30,
-    borderWidth: 2,
+    width: scaleSize(30),
+    height: scaleSize(30),
+    borderWidth: scaleSize(2),
     borderColor: '#142637',
-    borderRadius: 15,
+    borderRadius: scaleSize(15),
     backgroundColor: '#161a29', // Adjust the color
     alignItems: 'center',
     justifyContent: 'center',

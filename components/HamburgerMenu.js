@@ -1,6 +1,10 @@
 import React from 'react';
 import { View } from 'react-native';
 
+import metrics from '../utils/Metrics';
+
+const scaleSize = (size) => (metrics.screenWidth / 375) * size;
+
 const HamburgerMenu = () => {
   return (
     <View style={styles.hamburgerLines}>
@@ -16,27 +20,27 @@ const styles = {
     alignItems: 'center',
   },
   lineTop: {
-    height: 3, // Adjust as needed
-    width: 5,
+    height: scaleSize(3), // Adjust as needed
+    width: scaleSize(5),
     backgroundColor: '#dba597', // Adjust as needed
-    marginVertical: 1, // Adjust as needed
-    borderRadius: 2
+    marginVertical: scaleSize(1), // Adjust as needed
+    borderRadius: scaleSize(2)
     // Add other styles as needed
   },
   lineMid: {
-    height: 3, // Adjust as needed
-    width: 12,
+    height: scaleSize(3), // Adjust as needed
+    width: scaleSize(12),
     backgroundColor: '#dba597', // Adjust as needed
-    marginVertical: 1, // Adjust as needed
-    borderRadius: 4
+    marginVertical: scaleSize(1), // Adjust as needed
+    borderRadius: scaleSize(4)
     // Add other styles as needed
   },
   lineBot: {
-    height: 3, // Adjust as needed
-    width: 20,
+    height: scaleSize(3), // Adjust as needed
+    width: scaleSize(20),
     backgroundColor: '#dba597', // Adjust as needed
-    marginVertical: 1.5, // Adjust as needed
-    borderRadius: 4
+    marginVertical: scaleSize(1.5), // Adjust as needed
+    borderRadius:scaleSize(4)
     // Add other styles as needed
   },
 };

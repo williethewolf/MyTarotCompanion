@@ -1,5 +1,10 @@
 import React, {useState, useEffect, useRef } from 'react';
 import { Modal, View, TouchableOpacity, ScrollView, Text, Image, Animated, StyleSheet } from 'react-native';
+import metrics from '../utils/Metrics';
+
+const scaleSize = (size) => (metrics.screenWidth / 375) * size;
+
+const isTablet = metrics.screenWidth >= 768;
 
 import cupsSuitSmall from '../assets/decks/suitsIcons/cupsSuitSmall.png'
 import wandsSuitSmall from '../assets/decks/suitsIcons/wandsSuitSmall.png'
@@ -15,7 +20,7 @@ const typeToImageMap = {
     'pentacles': pentaclesSuitSmall,
   };
 
-const TarotCardTypeSelectionModal = ({ isVisible, onClose, tarotCards, onCardSelected }) => {
+const TarotCardSelectionModal = ({ isVisible, onClose, tarotCards, onCardSelected }) => {
 
     const [selectedType, setSelectedType] = useState(null);
 
@@ -79,9 +84,8 @@ const TarotCardTypeSelectionModal = ({ isVisible, onClose, tarotCards, onCardSel
             {/* Row for type buttons */}
             <View style={styles.buttonRow}>
               {['cups', 'wands', 'major arcana', 'swords', 'pentacles'].map((type) => (
-                <Animated.View style={[styles.roundButtonContent, getButtonStyle(type)]}>
+                <Animated.View key={`animated-${type}`} style={[styles.roundButtonContent, getButtonStyle(type)]}>
                 <TouchableOpacity
-                    key={type}
                     onPress={() => handleTypeSelect(type)}
                     style={[styles.roundButton]}
                 >
@@ -95,7 +99,7 @@ const TarotCardTypeSelectionModal = ({ isVisible, onClose, tarotCards, onCardSel
             {/* Row for close button */}
             <View style={styles.closeButtonRow}>
               <TouchableOpacity style={styles.closeButton} onPress={() => {onClose(); setSelectedType(null);}}>
-                <Text style={{color:'white'}}>Close</Text>
+                <Text style={{color:'white', fontSize:scaleSize(10)}}>Close</Text>
               </TouchableOpacity>
             </View>
           </View>
@@ -144,32 +148,32 @@ const styles = StyleSheet.create({
         justifyContent: 'flex-end', // Align content to the bottom
         alignItems: 'center', // Center content horizontally
         position: 'absolute', // Position it over other content
-        bottom: 75,
-        left: 0,
-        right: 0,
+        bottom: isTablet? scaleSize(60) : scaleSize(75),
+        left: -5,
+        right: 10,
     },
     typeSelectionContainer:{
         flexDirection: 'column', // Stack rows vertically
         alignItems: 'center', // Center the rows
         justifyContent: 'space-around', // or 'space-between'
-        padding: 10, // Adjust as needed
+        padding: scaleSize(10), // Adjust as needed
     },
     roundButton: {
-        width: 70, // Increase size for better visibility and touch
-        height: 70,
+        width: scaleSize(70), // Increase size for better visibility and touch
+        height: scaleSize(70),
         backgroundColor:'white',
-        borderRadius: 45, // Half of width/height to make it round
-        margin: 5, // Space between buttons
+        borderRadius: scaleSize(45), // Half of width/height to make it round
+        margin: scaleSize(5), // Space between buttons
         overflow: 'hidden', // To make sure the image respects the border radius
         alignItems: 'center', // Center the image horizontally
         justifyContent: 'center', // Center the image vertically
-        borderWidth:2,
+        borderWidth:scaleSize(2),
         borderColor: '#c4ae7e',
          // Shadows for iOS
         shadowColor: "#000",
         shadowOffset: {
           width: 0,
-          height: 2,
+          height: scaleSize(2),
         },
         shadowOpacity: 0.25,
         shadowRadius: 1,
@@ -177,14 +181,14 @@ const styles = StyleSheet.create({
         elevation: 4,
     },
     roundButtonContent: {
-        width: 70, // Increase size for better visibility and touch
-        height: 70,
+        width: scaleSize(70), // Increase size for better visibility and touch
+        height: scaleSize(70),
         backgroundColor:'white',
-        borderRadius: 45, // Half of width/height to make it round
+        borderRadius: scaleSize(45), // Half of width/height to make it round
         overflow: 'hidden', // To make sure the image respects the border radius
         alignItems: 'center', // Center the image horizontally
         justifyContent: 'center', // Center the image vertically
-        margin: 5,
+        margin: scaleSize(5),
           // Shadows for iOS
           shadowColor: "#000",
           shadowOffset: {
@@ -198,17 +202,17 @@ const styles = StyleSheet.create({
 
     },
     activeRoundButton: {
-        width: 80,
-        height: 80,
-        borderRadius: 40,
-        margin: 5,
+        width: scaleSize(80),
+        height: scaleSize(80),
+        borderRadius: scaleSize(40),
+        margin: scaleSize(5),
         overflow: 'hidden',
         alignItems: 'center',
         justifyContent: 'center',
         backgroundColor:'white',
-        borderWidth: 2,
+        borderWidth: scaleSize(2),
         borderColor: '#c4ae7e',
-        transform: [{ translateY: -10 }],
+        transform: [{ translateY: -scaleSize(10) }],
             // Shadows for iOS
         shadowColor: "#000",
         shadowOffset: {
@@ -223,11 +227,12 @@ const styles = StyleSheet.create({
     buttonImage: {
         width: '100%', // Image takes the full space of the button
         height: '100%', // Maintain aspect ratio
-        borderRadius: 50 // Make image round
+        borderRadius: scaleSize(50) // Make image round
     },
     buttonRow: {
         flexDirection: 'row', // Align type buttons horizontally
         justifyContent: 'space-around', // Space out the buttons evenly
+        gap:25,
     },
     closeButtonRow: {
         flexDirection: 'row', // Even though it's just one button, this keeps it consistent
@@ -242,10 +247,10 @@ const styles = StyleSheet.create({
         backgroundColor:'white',
         flex:1,
         //aspectRatio : 1 /1.87,
-        height:210,
-        width: 120,
-        borderRadius:8,
-        marginHorizontal: 5,
+        height:scaleSize(210),
+        width: scaleSize(120),
+        borderRadius:scaleSize(8),
+        marginHorizontal: scaleSize(5),
          // Shadows for iOS
          shadowColor: "#000",
          shadowOffset: {
@@ -261,7 +266,7 @@ const styles = StyleSheet.create({
         height: '85%',
         width: '100%',
         resizeMode: 'contain',
-        marginTop:10
+        marginTop:scaleSize(10)
       },
       modalContent: {
         flex: 1,
@@ -269,14 +274,14 @@ const styles = StyleSheet.create({
         alignItems: 'center',       // Center content horizontally
     },
     closeButton: {
-        width: 70, // Increase size for better visibility and touch
-        height: 70,
-        borderRadius: 45, // Half of width/height to make it round
-        margin: 5, // Space between buttons
+        width: scaleSize(50), // Increase size for better visibility and touch
+        height: scaleSize(50),
+        borderRadius: scaleSize(45), // Half of width/height to make it round
+        margin: scaleSize(5), // Space between buttons
         overflow: 'hidden', // To make sure the image respects the border radius
         alignItems: 'center', // Center the image horizontally
         justifyContent: 'center', // Center the image vertically
-        borderWidth:2,
+        borderWidth:scaleSize(2),
         borderColor: '#c4ae7e',
         backgroundColor: '#c4ae7e',
          // Shadows for iOS
@@ -292,4 +297,4 @@ const styles = StyleSheet.create({
     }
 });
 
-export default TarotCardTypeSelectionModal;
+export default TarotCardSelectionModal;

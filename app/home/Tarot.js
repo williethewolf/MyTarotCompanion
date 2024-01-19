@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { Text, View, TouchableOpacity, Animated, PanResponder, ScrollView } from 'react-native';
 import { Image } from 'expo-image';
-import styles from '../../styles';
+import styles from '../../tarotStyles';
 //Message for empty deck currently not in use
 //import EmptyDeckAnimatedText from './components/EmptyDeckAnimatedText';
 //deck data and assets
@@ -347,7 +347,7 @@ const handleReverseCard = () => {
            </TouchableOpacity>
         {/* </View> */}
           <View style={styles.cardLabel}>
-            <Text style={{flex:1,flexWrap:'nowrap', fontSize:12}}>{drawnCards[key].name}</Text>
+            <Text style={[{flex:1,flexWrap:'nowrap'},styles.cardLabelText]}>{drawnCards[key].name}</Text>
           </View>
         
         </View>

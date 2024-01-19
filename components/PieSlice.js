@@ -3,6 +3,11 @@ import { Link } from 'expo-router';
 import { TouchableOpacity, Text, StyleSheet, View, Animated } from 'react-native';
 import Svg, { Path, Circle } from 'react-native-svg';
 import { PieMenuContext } from '../Context';
+import metrics from '../utils/Metrics';
+
+const scaleSize = (size) => (metrics.screenWidth / 375) * size;
+
+const isTablet = metrics.screenWidth >= 768;
 
 const PieSlice = ({ onPress, backgroundColor, rotation, icon, name, size }) => {
   const [isPressed, setIsPressed] = useState(false);
@@ -13,19 +18,24 @@ const PieSlice = ({ onPress, backgroundColor, rotation, icon, name, size }) => {
   // Path for the slice
   const startAngle = 0; // Starting angle in degrees
 const endAngle = size; // Ending angle in degrees
-const radius = 150; // Radius of the circle
+const radius = scaleSize (150); // Larger radius for tablets
+const svgSize = radius * 2;
 
-const startX = radius + radius * Math.cos(Math.PI * startAngle / 180);
-const startY = radius + radius * Math.sin(Math.PI * startAngle / 180);
-const endX = radius + radius * Math.cos(Math.PI * (startAngle + endAngle) / 180);
-const endY = radius + radius * Math.sin(Math.PI * (startAngle + endAngle) / 180);
+// Adjust start and end coordinates for the slice path
+const sliceCenterX = radius; // Center X of the slice (and SVG)
+const sliceCenterY = radius; // Center Y of the slice (and SVG)
 
-const slicePath = `M150,150 L${startX},${startY} A150,150 0 0,1 ${endX},${endY} Z`;
+const startX = sliceCenterX + radius * Math.cos(Math.PI * startAngle / 180);
+const startY = sliceCenterY + radius * Math.sin(Math.PI * startAngle / 180);
+const endX = sliceCenterX + radius * Math.cos(Math.PI * (startAngle + endAngle) / 180);
+const endY = sliceCenterY + radius * Math.sin(Math.PI * (startAngle + endAngle) / 180);
+
+const slicePath = `M${sliceCenterX},${sliceCenterY} L${startX},${startY} A${radius},${radius} 0 0,1 ${endX},${endY} Z`;
 
 // Text position (near the middle of the slice)
 const textAngle = startAngle + (endAngle - startAngle) / 2;
-const textX = radius / 2 * Math.cos(Math.PI * textAngle / 180) + 155;
-const textY = radius / 2 * Math.sin(Math.PI * textAngle / 180) + 148;
+const textX = radius / 2 * Math.cos(Math.PI * textAngle / 180) + sliceCenterX+5;
+const textY = radius / 2 * Math.sin(Math.PI * textAngle / 180) + sliceCenterY-3;
 
  // Calculate the rotation angle for the text
  const textRotationAngle = size / 2;
@@ -115,8 +125,8 @@ const pointerEventsValue = name === "FILLER" ? "none" : "box-none";
 const isNotFiller = name !== "FILLER";
 return (
   
-    <Svg pointerEvents={pointerEventsValue} height="300" width="300" viewBox="0 0 300 300" style={{ position: 'absolute', transform: [{ rotate: `${rotation}deg` }], zIndex:1 }}>
-      <Circle r="3" cx="35" cy="35" fill="#c4ae7e" />
+    <Svg pointerEvents={pointerEventsValue} height={svgSize} width={svgSize} viewBox={`0 0 ${svgSize} ${svgSize}`} style={{ position: 'absolute', transform: [{ rotate: `${rotation}deg` }], zIndex:1 }}>
+      <Circle r={scaleSize(3)} cx={scaleSize(35)} cy={scaleSize(35)} fill="#c4ae7e" />
       {isNotFiller ? (
         <Link href={urlTo()} asChild>
           <Path
@@ -155,6 +165,7 @@ const styles = StyleSheet.create({
     position: 'absolute',
     color: 'white', // Adjust text color as needed
     textAlign: 'center',
+    fontSize: scaleSize(11)
     // Add other styles for tex
   //  borderWidth: 1,
   //   borderColor: '#c4ae7e',

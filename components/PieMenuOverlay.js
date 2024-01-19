@@ -1,7 +1,11 @@
-// PieMenuOverlay.js
 import React, { useContext, useEffect, useRef } from 'react';
 import { View, StyleSheet, Modal, TouchableOpacity, Text, Animated  } from 'react-native';
 import { PieMenuContext } from '../Context';
+import metrics from '../utils/Metrics';
+
+const scaleSize = (size) => (metrics.screenWidth / 375) * size;
+
+const isTablet = metrics.screenWidth >= 768;
 
 const PieMenuOverlay = () => {
   const { pieMenu, buttonPosition, hidePieMenuAfterAnimation  } = useContext(PieMenuContext);
@@ -57,8 +61,8 @@ const animatedStyle = {
 
   const menuStyle = {
     position: 'absolute',
-    width: 300,
-    height: 300,
+    width: scaleSize(300),
+    height: scaleSize(300),
     left: buttonPosition.x + (buttonPosition.width / 2) - 150,
     top: buttonPosition.y + (buttonPosition.height / 2) - 200,
     zIndex:1,
@@ -67,62 +71,62 @@ const animatedStyle = {
 
   const roundButton= {
     position: 'absolute',
-    width: 30,
-    height: 30,
-    borderWidth: 1,
+    width: scaleSize(31),
+    height: scaleSize(31),
+    borderWidth: scaleSize(1),
     borderColor: '#c4ae7e',
-    borderRadius: 50,
+    borderRadius: scaleSize(50),
     backgroundColor: '#161a29',
     alignItems: 'center',
     justifyContent: 'center',
     zIndex: 1000, // Ensure the button is above the pie menu
-    left: buttonPosition.x,
-    top: buttonPosition.y- buttonPosition.height*1.65,
+    left: buttonPosition.x * (isTablet? 0.4 : 0.94 ),
+    top: buttonPosition.y- buttonPosition.height* (isTablet? 1.2 : 1.7 ),
     
   };
   const roundInnerAccent= {
     position: 'absolute',
-    width: 60,
-    height: 60,
+    width: scaleSize(60),
+    height: scaleSize(60),
     borderWidth: 1,
     borderColor: '#c4ae7e',
-    borderRadius: 60/2,
+    borderRadius: scaleSize(60)/2,
     
     alignItems: 'center',
     justifyContent: 'center',
     zIndex: 800, // Ensure the button is above the pie menu
-    left: buttonPosition.x*0.08,
-    top: buttonPosition.y- buttonPosition.height*2.12,
+    left: buttonPosition.x*(isTablet? -0.5: 0.04) ,
+    top: buttonPosition.y- buttonPosition.height* (isTablet? 1.7 :2.165),
     
   };
   const roundOuterAccent= {
     position: 'absolute',
-    width: 295,
-    height: 295,
-    borderWidth: 3,
+    width: scaleSize(295),
+    height: scaleSize(295),
+    borderWidth: scaleSize(3),
     borderColor: '#c4ae7e',
-    borderRadius: 295/2,
+    borderRadius: scaleSize(295)/2,
     
     alignItems: 'center',
     justifyContent: 'center',
     zIndex: 800, // Ensure the button is above the pie menu
-    left: buttonPosition.x*-7.,
-    top: buttonPosition.y- buttonPosition.height*5.9,
+    left: buttonPosition.x*(isTablet? -7.7:-7.2),
+    top: buttonPosition.y- buttonPosition.height * (isTablet? 5.5 :6),
     
   };
   const roundMiddleAccent= {
     position: 'absolute',
-    width: 120,
-    height: 120,
+    width: scaleSize(120),
+    height: scaleSize(120),
     borderWidth: 1,
     borderColor: '#c4ae7e',
-    borderRadius: 120/2,
+    borderRadius: scaleSize(120)/2,
     
     alignItems: 'center',
     justifyContent: 'center',
     zIndex: 800, // Ensure the button is above the pie menu
-    left: buttonPosition.x*-1.65,
-    top: buttonPosition.y- buttonPosition.height*3,
+    left: buttonPosition.x*(isTablet? -2.2 : -1.65 ),
+    top: buttonPosition.y- buttonPosition.height* (isTablet? 2.6 : 3 ),
     
   };
 
@@ -165,8 +169,8 @@ const styles = StyleSheet.create({
   
   rightMenuButton: {
     color: 'white',
-    fontSize: 24,
-    lineHeight: 28.5,
+    fontSize: scaleSize(23),
+    lineHeight: scaleSize(30),
     zIndex: 1000,
   
   }
