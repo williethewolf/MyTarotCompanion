@@ -12,6 +12,8 @@ import backofCards from "../../assets/decks/riderTarot/BackofDeck.svg";
 import TarotCardSelectionModal from '../../components/TarotCardSelectionModal';
 //Import Card Details modal
 import TarotCardDetailsModal from '../../components/TarotCardDetailsModal';
+//SignupModal
+import SignUpModal from '../../components/SignupModal';
 
 
 const Tarot= () => {
@@ -50,6 +52,8 @@ const Tarot= () => {
   //Card Details modal states and stuff
   const [selectedCardForDetail, setSelectedCardForDetail] = useState(null);
   const [isCardDetailModalVisible, setIsCardDetailModalVisible] = useState(false);
+
+  const [signUpModalVisible, setSignUpModalVisible] = useState(false);
 
   //DECK OPERATIONS
   const shuffleDeck = () => {
@@ -308,6 +312,14 @@ const handleReverseCard = () => {
     //currentDeck.current = currentDeck.current.filter(c => c.name !== card.name);
   };
 
+  //READ FUNCTION NOT IMPLEMENTED YET
+  const handleReadPress = () => {
+    setSignUpModalVisible(true);
+  };
+
+  const missingFeatureMessage =
+  "This feature will allow you to get AI generated readings going more in detail about what your card spread means but has not been yet implemented."
+
 
   return (
     <View style={styles.container}>
@@ -394,9 +406,14 @@ const handleReverseCard = () => {
         </View>
           <View style={styles.cardSelectionArea}>
       {/* Reset Button */}
-        <TouchableOpacity onPress={resetDeck} style={styles.pillButton}>
+        <TouchableOpacity onPress={handleReadPress} style={styles.pillButton}>
           <Text style={styles.pillButtonText}>Read</Text>
         </TouchableOpacity>
+        <SignUpModal
+        isVisible={signUpModalVisible}
+        onClose={() => setSignUpModalVisible(false)}
+        missingFeatureMessage = {missingFeatureMessage}
+      />
       </View>
 
       <TarotCardSelectionModal
