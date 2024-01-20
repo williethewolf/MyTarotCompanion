@@ -9,7 +9,7 @@ const MoonPhase = ({ display = "both", fontSize = 55 }) => {
         const getMoonPhase = () => {
             const now = new Date();
             const phase = SunCalc.getMoonIllumination(now).phase;
-            console.log(phase);
+            //console.log(phase);
             
             let name, symbol;
             const epsilon = 0.03; // Threshold for fuzzy comparison
