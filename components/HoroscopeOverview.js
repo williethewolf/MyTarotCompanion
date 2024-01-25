@@ -1,6 +1,8 @@
-import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, Dimensions } from 'react-native';
+import React, { useState, useEffect, useRef } from 'react';
+import { View, Text, StyleSheet, Dimensions, Animated } from 'react-native';
 import { useFonts, Carattere_400Regular } from '@expo-google-fonts/carattere';
+import { NotoEmoji_400Regular } from '@expo-google-fonts/noto-emoji';
+
 import getUserZodiacSign from './getUserZodiacSign';
 import { Image } from 'expo-image';
 import Carousel from 'react-native-reanimated-carousel';
@@ -13,6 +15,12 @@ import MoonPhase from './MoonPhase';
 import MercuryRetrograde from './MercuryRetrograde';
 
 const screenWidth = Dimensions.get('window').width;
+
+//anim imports
+import FlippableViewIcons from './FlippableViewIcons';
+
+//import hook to display upcomign astro events
+import useNextAstrologicalEvent from './useNextAstrologicalEvent';
 
 
 
@@ -37,9 +45,12 @@ const HoroscopeOverview = ({ user, horoscope }) => {
         };
         todayISOdate();
     }, []);
-
-   // Carousel configuration
-   const carouselConfig = {
+    
+    //astro events hook
+    const nextEvent = useNextAstrologicalEvent();
+    
+    // Carousel configuration
+    const carouselConfig = {
         width: 125,
         height: 125,
         loop: true,
@@ -59,34 +70,75 @@ const HoroscopeOverview = ({ user, horoscope }) => {
 
     let [fontsLoaded] = useFonts({
         Carattere_400Regular,
+        NotoEmoji_400Regular,
       });
     
       if (!fontsLoaded) {
         return <View><Text>Loading...</Text></View>;
       }
+
+      //Next event display opacity logic
+    
+    const symbolStyle = {
+        fontFamily: 'monospace',
+        opacity: nextEvent.isToday ? 1 : 0.5,
+        fontSize: 20, // Adjust size as needed
+    };
     
     return (
         <View style={styles.container}>
+             
             {/* First Row */}
             <View style={styles.firstRow}>
                 <View style={styles.firstRowColumn1}>
                     <View style={styles.roundIconContainer}>
-                    <Image
-                    source={zodiacImagePath}
-                    style={styles.smallRoundIcon}
-                 />
+                        <FlippableViewIcons
+                            frontComponent={
+                                <Image
+                                source={zodiacImagePath}
+                                style={styles.smallRoundIcon}
+                                />
+                            }
+                            backComponent={
+                                <View style={styles.flipTextContainer}>
+                                    <Text style={[styles.flipInfoText,{fontSize:9}]}>Sun Sign</Text>
+                                    <Text style={[styles.flipInfoText,{fontSize:9}]}>{userZodiac.name}</Text>
+                                </View>
+                            }backComponentStyle={{ top: -2 }}
+                        />
                     </View>
                     <View style={styles.roundIconContainer}>
-                    <Image
-                    source={getZodiacImage('Cancer')}
-                    style={styles.smallRoundIcon}
-                 />
+                        <FlippableViewIcons
+                            frontComponent={
+                                <Image
+                                source={getZodiacImage('Cancer')}
+                                style={styles.smallRoundIcon}
+                                />
+                            }
+                            backComponent={
+                                <View style={styles.flipTextContainer}>
+                                    <Text style={[styles.flipInfoText,{fontSize:9}]}>Rising</Text>
+                                    <Text style={[styles.flipInfoText,{fontSize:9}]}>Sign</Text>
+                                </View>
+                            }backComponentStyle={{ top: -2 }}
+                    />
                     </View>
+                    
                     <View style={styles.roundIconContainer}>
-                    <Image
-                    source={getZodiacImage('Libra')}
-                    style={styles.smallRoundIcon}
-                 />
+                    <FlippableViewIcons
+                            frontComponent={
+                                <Image
+                                source={getZodiacImage('Libra')}
+                                style={styles.smallRoundIcon}
+                                />
+                            }
+                            backComponent={
+                                <View style={styles.flipTextContainer}>
+                                    <Text style={[styles.flipInfoText,{fontSize:9}]}>Moon</Text>
+                                    <Text style={[styles.flipInfoText,{fontSize:9}]}>Sign</Text>
+                                </View>
+                            }backComponentStyle={{ top: -2 }}
+                    />
                     </View>
                 </View>
                 <View style={styles.firstRowColumn2}>
@@ -106,22 +158,51 @@ const HoroscopeOverview = ({ user, horoscope }) => {
                 </View>
                 <View style={styles.firstRowColumn3}>
                     <View style={styles.roundIconContainer}>
-                        <Text style={{fontSize:20,}}>{userZodiac.luckyNumber}</Text>
+                        <FlippableViewIcons
+                                frontComponent={
+                                    <Text style={{fontSize:20,}}>{userZodiac.luckyNumber}</Text>
+                                }
+                            backComponent={
+                                <View style={styles.flipTextContainer}>
+                                    <Text style={styles.flipInfoText}>Lucky</Text>
+                                    <Text style={styles.flipInfoText}>number</Text>
+                                </View>
+                            }backComponentStyle={{ top: -5 }}
+                        />
                     </View>
                     <View style={{...styles.roundIconContainer, }}>
-                        <Text style={{fontSize:40,}}>{userZodiac.rulerSymbol[0]}</Text>
+                        <FlippableViewIcons
+                            frontComponent={
+                                <Text style={{fontSize:40,}}>{userZodiac.rulerSymbol[0]}</Text>
+                            }
+                            backComponent={
+                                <View style={styles.flipTextContainer}>
+                                    <Text style={[styles.flipInfoText,{fontSize:9}]}>Ruler Planet</Text>
+                                    <Text style={styles.flipInfoText} >{userZodiac.ruler[0]}</Text>
+                                </View>
+                            }backComponentStyle={{top: 5 }}
+                        />
                     </View>
                     <View style={styles.roundIconContainer}>
-                    <Image
-                    source={elementImagePath}
-                    style={styles.elementSmallRoundIcon}
-                 />
+                        <FlippableViewIcons
+                            frontComponent={
+                                <Image
+                                source={elementImagePath}
+                                style={styles.elementSmallRoundIcon}
+                                />
+                            }
+                            backComponent={
+                                <View style={styles.flipTextContainer}>
+                                    <Text style={[styles.flipInfoText,{fontSize:9}]}>Element</Text>
+                                    <Text style={styles.flipInfoText}>{userZodiac.element}</Text>
+                                </View>
+                            }backComponentStyle={{ top: 2 }}
+                        />
                     </View>
                 </View>
             </View>
-
-            {/* Second Row */}
-            <View style={styles.secondRow}>
+           {/* Second Row */}
+           <View style={styles.secondRow}>
             {/* Content for Second Row */}
                 <View style={styles.nameBox}>
                     <Text style={styles.userName}>{user.name}</Text> 
@@ -184,28 +265,73 @@ const HoroscopeOverview = ({ user, horoscope }) => {
             <View style={styles.fourthRow}>
                 
                     <View style={styles.fourthRowColumn}>
-                    <Image
-                        source={getZodiacImage(currentSign.name)}
-                        style={{
-                            width: 30,
-                            height: 30,
-                            }}
-                    />
+                        <FlippableViewIcons
+                                frontComponent={
+                                    <Image
+                                        source={getZodiacImage(currentSign.name)}
+                                        style={{
+                                            width: 30,
+                                            height: 30,
+                                            }}
+                        />
+                                }
+                                backComponent={
+                                    <View style={styles.flipTextContainer}>
+                                        <Text style={styles.flipInfoText}>Current</Text>
+                                        <Text style={styles.flipInfoText}>Sign</Text>
+                                    </View>
+                                }backComponentStyle={{ top: -2 }}
+                        />
                     </View>
                     <View style={styles.fourthRowColumn}>
+                        <FlippableViewIcons
+                                frontComponent={
+                                    <View style={{ textAlign:'center', top:-10,}}>
+                                    <Text style={{ textAlign:'center', top:10,}}>☿</Text>
+                                    <MercuryRetrograde/>
+                                    </View>
+                                }
+                                backComponent={
+                                    <View style={[styles.flipTextContainer, {textAlign:'center', top:15}]}>
+                                        <Text style={styles.flipInfoText}>Mercury</Text>
+                                        <Text style={styles.flipInfoText}>Retrograde</Text>
+                                    </View>
+                                }backComponentStyle={{ top: -2 }}
+                        />
                         <View style={{ position: 'relative', top:-12, lineHeight:35}}>
-                            <Text style={{ textAlign:'center', top:10,}}>☿</Text>
-                            <MercuryRetrograde/>
+                            
                         </View>
                     </View>
                     <View style={styles.fourthRowColumn}>
                         <MoonPhase display="symbol"/>
                     </View>
                     <View style={styles.fourthRowColumn}>
-                        <Text>🜚︎</Text>
+                        <FlippableViewIcons
+                            frontComponent={
+                                <Text style={[symbolStyle, {fontFamily: 'NotoEmoji_400Regular'}]}>🜚{nextEvent.symbol}</Text>
+                            }
+                            backComponent={
+                                <View>
+                                    <Text style={[styles.flipInfoText,{fontSize:9}]}>{nextEvent.date}</Text>
+                                    <Text style={[styles.flipInfoText,{fontSize:10}]}>{nextEvent.name}</Text>
+                                </View>
+
+                            }
+                        />
                     </View>
                     <View style={styles.fourthRowColumnEnd}>
-                        <Text>🜨</Text>
+                        <FlippableViewIcons
+                            frontComponent={
+                                <Text style={[symbolStyle, {fontFamily: 'NotoEmoji_400Regular'}]}>{nextEvent.symbol}</Text>
+                            }
+                            backComponent={
+                                <View>
+                                    <Text style={[styles.flipInfoText,{fontSize:9}]}>{nextEvent.date}</Text>
+                                    <Text style={[styles.flipInfoText,{fontSize:10}]}>{nextEvent.name}</Text>
+                                </View>
+
+                            }
+                        />
                     </View>
             </View>
 
@@ -371,6 +497,14 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         marginTop:3,  
+    },
+    flipTextContainer: {
+        //justifyContent: 'center',
+        alignItems: 'center',
+        backfaceVisibility: 'hidden',
+    },
+    flipInfoText:{
+        fontSize:12
     }
 });
 
