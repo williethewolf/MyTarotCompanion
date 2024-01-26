@@ -26,18 +26,18 @@ const NavigationMenuButton = () => {
       
             // Define the slices and actions for the pie menu
             const slices = [
-              { color: '#161a29', size:28, rotation: 350, name:'Home', action: () => console.log('Home') },
-              { color: '#121521', size:28, rotation: 18, name:'Tarot', action: () => {console.log('Tarot')} },
-              { color: '#161a29', size:28, rotation: 46,name:'Astrology', action: () => console.log('Astrology') },
-              { color: '#121521', size:28, rotation: 74, name:'Stones', action: () => console.log('Gemstones') },
-              { color: '#161a29', size:31, rotation: 102, name:'FILLER',action: () => console.log('The Void') },
-              { color: '#121521', size:31, rotation: 133, name:'FILLER',action: () => console.log('The Void') },
-              { color: '#161a29', size:31, rotation: 164, name:'FILLER',action: () => console.log('The Void') },
-              { color: '#121521', size:31, rotation: 195, name:'FILLER',action: () => console.log('The Void') },
-              { color: '#161a29', size:31, rotation: 226, name:'FILLER',action: () => console.log('The Void') },
-              { color: '#121521', size:31, rotation: 257, name:'FILLER',action: () => console.log('The Void') },
-              { color: '#161a29', size:31, rotation: 288, name:'FILLER',action: () => console.log('The Void') },
-              { color: '#121521', size:31, rotation: 319, name:'FILLER',action: () => console.log('The Void') },
+              { color: '#161a29', size:28, rotation: 350, name:'Home', },
+              { color: '#121521', size:28, rotation: 18, name:'Tarot',  },
+              { color: '#161a29', size:28, rotation: 46,name:'Astrology',},
+              { color: '#121521', size:28, rotation: 74, name:'Stones', },
+              { color: '#161a29', size:31, rotation: 102, name:'FILLER', },
+              { color: '#121521', size:31, rotation: 133, name:'FILLER', },
+              { color: '#161a29', size:31, rotation: 164, name:'FILLER', },
+              { color: '#121521', size:31, rotation: 195, name:'FILLER', },
+              { color: '#161a29', size:31, rotation: 226, name:'FILLER', },
+              { color: '#121521', size:31, rotation: 257, name:'FILLER', },
+              { color: '#161a29', size:31, rotation: 288, name:'FILLER', },
+              { color: '#121521', size:31, rotation: 319, name:'FILLER', },
             ];
       
             // Define the pie menu content

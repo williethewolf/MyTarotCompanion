@@ -8,7 +8,7 @@ export const PieMenuProvider = ({ children }) => {
   const [buttonPosition, setButtonPosition] = useState({ x: 0, y: 0, width: 0, height: 0 });
 
   const showPieMenu = (content) => {
-    console.log('showPieMenu triggered');
+    //console.log('showPieMenu triggered');
     setPieMenu({ visible: true, content });
   };
   const hidePieMenu = () => setPieMenu({ visible: false, content: null });
