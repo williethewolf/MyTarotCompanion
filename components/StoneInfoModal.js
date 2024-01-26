@@ -2,7 +2,8 @@ import React, { useState } from 'react';
 import { Image } from 'expo-image';
 import { Modal, View, Text, TouchableOpacity, ScrollView, StyleSheet, Dimensions } from 'react-native';
 import CapitalizeFirst from '../utils/CapitalizeFirst';
-import StringParser from '../utils/StringParser';
+import Markdown from 'react-native-markdown-display';
+import { isTablet, scaleSize } from '../utils/ResponsiveSizes'
 
 const StoneInfoModal =({ item, visible, onClose }) => {
     if (!item) return null;
@@ -29,7 +30,7 @@ const StoneInfoModal =({ item, visible, onClose }) => {
                 <Image source={ imageSource} style={styles.modalImage} placeholder={defaultImagePath} transition={500} alt={item.name} />
                 <Text style={styles.modalTitle}>{CapitalizeFirst(item.Name[0])}</Text>
                 <ScrollView style={styles.descriptionScroll} onStartShouldSetResponder={() => true}>
-                    <Text style={styles.descriptionText}>{item.Description}</Text>
+                <Markdown style={{body: [styles.descriptionText,{fontSize: isTablet ? scaleSize(11) : scaleSize(12)}]}} >{item.Description}</Markdown>
                     {/* Add more content here */}
                 </ScrollView>
                 <TouchableOpacity style={styles.closeButton} onPress={onClose}>
@@ -58,7 +59,7 @@ const StoneInfoModal =({ item, visible, onClose }) => {
     },
     modalImage: {
       width: '100%',
-      height: 200, // Adjust as needed
+      height: 300, // Adjust as needed
       borderRadius: 10,
     },
     modalTitle: {

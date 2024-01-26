@@ -1,8 +1,6 @@
 import { Text, View, StyleSheet } from 'react-native'
 
-import metrics from '../utils/Metrics';
-
-const scaleSize = (size) => (metrics.screenWidth / 375) * size;
+import { isTablet, scaleSize } from '../utils/ResponsiveSizes'
 
 const StyledTitle = ({ navigation  }) => {
     const title = (navigation?.getState()?.routes?.[navigation?.getState()?.index]?.name || 'Default Title').toUpperCase();

@@ -22,6 +22,9 @@ import FlippableViewIcons from './FlippableViewIcons';
 //import hook to display upcomign astro events
 import useNextAstrologicalEvent from './useNextAstrologicalEvent';
 
+//Responsive tools
+import { isTablet, scaleSize } from '../utils/ResponsiveSizes'
+
 
 
 

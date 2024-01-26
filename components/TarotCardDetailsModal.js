@@ -3,6 +3,7 @@ import { Modal, View, TouchableOpacity, Text, Animated, Image, StyleSheet, Scrol
 import Markdown from 'react-native-markdown-display';
 import metrics from '../utils/Metrics';
 
+//Responisive
 const scaleSize = (size) => (metrics.screenWidth / 375) * size;
 
 const isTablet = metrics.screenWidth >= 768;

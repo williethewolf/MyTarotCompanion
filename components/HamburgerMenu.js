@@ -1,9 +1,7 @@
 import React from 'react';
 import { View } from 'react-native';
 
-import metrics from '../utils/Metrics';
-
-const scaleSize = (size) => (metrics.screenWidth / 375) * size;
+import { isTablet, scaleSize } from '../utils/ResponsiveSizes'
 
 const HamburgerMenu = () => {
   return (

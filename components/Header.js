@@ -3,9 +3,7 @@ import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 
 import HamburgerMenu from './HamburgerMenu';
 
-import metrics from '../utils/Metrics';
-
-const scaleSize = (size) => (metrics.screenWidth / 375) * size;
+import { isTablet, scaleSize } from '../utils/ResponsiveSizes'
 
 const Header = () => {
   return (

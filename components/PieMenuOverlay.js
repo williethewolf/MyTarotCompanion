@@ -1,11 +1,7 @@
 import React, { useContext, useEffect, useRef } from 'react';
 import { View, StyleSheet, Modal, TouchableOpacity, Text, Animated  } from 'react-native';
 import { PieMenuContext } from '../Context';
-import metrics from '../utils/Metrics';
-
-const scaleSize = (size) => (metrics.screenWidth / 375) * size;
-
-const isTablet = metrics.screenWidth >= 768;
+import { isTablet, scaleSize } from '../utils/ResponsiveSizes'
 
 const PieMenuOverlay = () => {
   const { pieMenu, buttonPosition, hidePieMenuAfterAnimation  } = useContext(PieMenuContext);

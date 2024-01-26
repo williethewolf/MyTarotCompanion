@@ -3,11 +3,7 @@ import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { Link } from 'expo-router';
 import { PieMenuContext } from '../Context'
 import PieSlice from './PieSlice'; // Import the PieSlice component
-import metrics from '../utils/Metrics';
-
-const scaleSize = (size) => (metrics.screenWidth / 375) * size;
-
-const isTablet = metrics.screenWidth >= 768;
+import { isTablet, scaleSize } from '../utils/ResponsiveSizes'
 
 const NavigationMenuButton = () => {
     const buttonRef = useRef(null);

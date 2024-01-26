@@ -1,10 +1,6 @@
 import React, {useState, useEffect, useRef } from 'react';
 import { Modal, View, TouchableOpacity, ScrollView, Text, Image, Animated, StyleSheet } from 'react-native';
-import metrics from '../utils/Metrics';
-
-const scaleSize = (size) => (metrics.screenWidth / 375) * size;
-
-const isTablet = metrics.screenWidth >= 768;
+import { isTablet, scaleSize } from '../utils/ResponsiveSizes'
 
 import cupsSuitSmall from '../assets/decks/suitsIcons/cupsSuitSmall.png'
 import wandsSuitSmall from '../assets/decks/suitsIcons/wandsSuitSmall.png'

@@ -3,11 +3,7 @@ import { Link } from 'expo-router';
 import { TouchableOpacity, Text, StyleSheet, View, Animated } from 'react-native';
 import Svg, { Path, Circle } from 'react-native-svg';
 import { PieMenuContext } from '../Context';
-import metrics from '../utils/Metrics';
-
-const scaleSize = (size) => (metrics.screenWidth / 375) * size;
-
-const isTablet = metrics.screenWidth >= 768;
+import { isTablet, scaleSize } from '../utils/ResponsiveSizes'
 
 const PieSlice = ({ onPress, backgroundColor, rotation, icon, name, size }) => {
   const [isPressed, setIsPressed] = useState(false);
