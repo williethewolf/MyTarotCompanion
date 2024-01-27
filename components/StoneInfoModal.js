@@ -102,7 +102,7 @@ const styles = StyleSheet.create({
       justifyContent: 'flex-start',
       alignItems: 'center',
       //backgroundColor: 'rgba(0, 0, 0, 0.2)', // Semi-transparent background
-      paddingTop:50,
+      paddingTop:scaleSize(50),
     },
     modalContent: {
         width: '100%',
@@ -119,43 +119,43 @@ const styles = StyleSheet.create({
       borderRadius: 10,
     },
     modalTitle: {
-        fontSize: 16,
+        fontSize: scaleSize(16),
         fontWeight: 'bold',
-        marginVertical:15
+        marginVertical:scaleSize(15)
     },
     descriptionScroll: {
       maxHeight: Dimensions.get('window').height / scaleSize(5), // Adjust as needed
     },
     descriptionText: {
-      fontSize: 16,
+      fontSize: scaleSize(16),
       color: 'black',
     },
     closeButton: {
       position: 'absolute',
-      top: 10,
-      right: 10,
+      top: scaleSize(10),
+      right: scaleSize(10),
       zIndex:11,
       // Add more styling for the close button
     },
     firstView: {
       width: '100%',
-      borderBottomLeftRadius: 20,
-      borderBottomRightRadius: 20,
+      borderBottomLeftRadius: scaleSize(20),
+      borderBottomRightRadius: scaleSize(20),
       backgroundColor: 'white',
-      paddingBottom: 10,
-      marginBottom: -20, // To overlap onto the next view
+      paddingBottom: scaleSize(10),
+      marginBottom: -scaleSize(20), // To overlap onto the next view
       alignItems: 'center',
       zIndex: 10
     },
     horizontalLine: {
         width: '80%',
-        height: 1,
+        height: scaleSize(1),
         backgroundColor: 'grey',
-        marginVertical: 5,
+        marginVertical: scaleSize(5),
     },
     propertiesContainer: {
       marginVertical:scaleSize(10),
-      paddingHorizontal:20
+      paddingHorizontal:scaleSize(20)
     },
     propertiesContentContainer: {
       // Styles that affect the layout of the ScrollView's children
@@ -166,10 +166,10 @@ const styles = StyleSheet.create({
     },
     propertyPill: {
         backgroundColor: '#f5e5ba',
-        borderRadius: 15,
-        paddingVertical: 5,
-        paddingHorizontal: 10,
-        margin: 5,
+        borderRadius: scaleSize(15),
+        paddingVertical: scaleSize(5),
+        paddingHorizontal: scaleSize(10),
+        margin: scaleSize(3),
     },
     propertyText: {
         color: '#0e0f17',
@@ -177,27 +177,27 @@ const styles = StyleSheet.create({
     },
     thirdView: {
         width: '100%',
-        borderTopLeftRadius: 20,
-        borderTopRightRadius: 20,
+        borderTopLeftRadius: scaleSize(20),
+        borderTopRightRadius: scaleSize(20),
         backgroundColor: 'white',
-        paddingTop: 20,
+        paddingTop: scaleSize(20),
         zIndex: 10,
-        marginTop: -20,
-        paddingHorizontal:40
+        marginTop: -scaleSize(20),
+        paddingHorizontal:scaleSize(40)
     },
     affiliateButton: {
-      borderRadius: 20,
-      padding: 10,
+      borderRadius: scaleSize(20),
+      padding: scaleSize(10),
       alignItems: 'center',
-      marginTop: 20,
-      marginBottom: 10,
+      marginTop: scaleSize(20),
+      marginBottom: scaleSize(10),
     },
     affiliateButtonText: {
         color: 'white',
-        fontSize: 16,
+        fontSize: scaleSize(16),
     },
     fadeEffect: {
-      height: 15,
+      height: scaleSize(15),
       width: '100%',
       position: 'absolute',
       bottom: 0,
