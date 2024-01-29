@@ -16,46 +16,51 @@ const Stones = () => {
 
   const [selectedWord, setSelectedWord] = useState('');
 
-  const getMatchingWords = (query, data) => {
-    if (!query.trim()) return []; // Return empty if query is empty
+  const getMatchingWords = (word, data) => {
+    if (!word.trim()) return [];
   
-    const queryLower = query.toLowerCase();
+    const wordLower = word.toLowerCase();
     const wordSet = new Set();
   
     data.forEach(item => {
-      const words = item.Description.split(/\s+/).map(word => word.replace(/[.,\/#!$%\^&\*;:{}=\-_`~()"']/g, ""));
-      words.forEach(word => {
-        const wordLower = word.toLowerCase();
-        if (wordLower.startsWith(queryLower)) {
-          wordSet.add(wordLower);
+      // Include properties in the search
+      const words = (item.Description + ' ' + item.Properties.join(' ')).split(/\s+/)
+                    .map(w => w.replace(/[.,\/#!$%\^&\*;:{}=\-_`~()"']/g, ""));
+      words.forEach(w => {
+        const wLower = w.toLowerCase();
+        if (wLower.startsWith(wordLower)) {
+          wordSet.add(wLower);
         }
       });
     });
   
-    return Array.from(wordSet).sort((a, b) => a.length - b.length || a.localeCompare(b)); // Sort by length, then alphabetically
+    return Array.from(wordSet).sort((a, b) => a.length - b.length || a.localeCompare(b));
   };
 
-  const matchingWords = useMemo(() => getMatchingWords(query, stoneData), [query, stoneData]);
+  const matchingWords = useMemo(() => {
+    const lastWord = query.split(/\s+/).pop();
+    return getMatchingWords(lastWord, stoneData);
+  }, [query, stoneData]);
+
 
   const filteredData = useMemo(() => {
     if (selectedWord) {
       // Filter based on the selected word
       return stoneData.filter(item => {
-        const itemText = (item.Name[0] + ' ' + item.Description).toLowerCase();
+        const itemText = (item.Name[0] + ' ' + item.Description+' ' + item.Properties.join(' ')).toLowerCase();
         const words = itemText.split(/\s+/).map(word => word.replace(/[.,\/#!$%\^&\*;:{}=\-_`~()"']/g, ""));
         return words.includes(selectedWord.toLowerCase());
       });
     } else if (query) {
-      // Filter based on the query if there's no selected word
-      const queryLower = query.toLowerCase();
+      const queryWords = query.toLowerCase().split(/\s+/); // Split query into words
       return stoneData.filter(item => {
         const itemText = (item.Name[0] + ' ' + item.Description).toLowerCase();
-        const words = itemText.split(/\s+/).map(word => word.replace(/[.,\/#!$%\^&\*;:{}=\-_`~()"']/g, ""));
-        return words.some(word => word.startsWith(queryLower));
+        return queryWords.every(word => 
+          itemText.includes(word)
+        );
       });
     } else {
-      // Show all data if neither query nor selected word is present
-      return stoneData;
+      return stoneData; // Show all data if neither query nor selected word is present
     }
   }, [query, selectedWord, stoneData]);
 
@@ -68,6 +73,12 @@ const Stones = () => {
   const handleCardPress = (item) => {
     setSelectedItem(item);
     setModalVisible(true);
+  };
+
+  const handlePropertySelect = (property) => {
+    setQuery(property);
+    setSelectedWord(''); // If you want the word to be selected as well
+    setModalVisible(false);
   };
 
   return (
@@ -100,6 +111,7 @@ const Stones = () => {
         item={selectedItem}
         visible={modalVisible}
         onClose={() => setModalVisible(false)}
+        onPropertySelect={handlePropertySelect}
       />
     </View>
   );

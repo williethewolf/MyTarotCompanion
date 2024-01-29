@@ -6,7 +6,7 @@ import CapitalizeFirst from '../utils/CapitalizeFirst';
 import Markdown from 'react-native-markdown-display';
 import { isTablet, scaleSize } from '../utils/ResponsiveSizes';
 
-const StoneInfoModal = ({ item, visible, onClose }) => {
+const StoneInfoModal = ({ item, visible, onClose, onPropertySelect }) => {
     if (!item) return null;
 
     const defaultImagePath = require('../assets/stones/images/missing.png');
@@ -30,10 +30,12 @@ const StoneInfoModal = ({ item, visible, onClose }) => {
 
     const renderProperties = () => {
         return item.Properties.map((property, index) => (
-            <View key={index} style={styles.propertyPill}>
+            <TouchableOpacity key={index} onPress={() => onPropertySelect(property)}>
+              <View style={styles.propertyPill}>
                 <Text style={styles.propertyText}>{property}</Text>
-            </View>
-        ));
+              </View>
+            </TouchableOpacity>
+          ));
     };
 
     return (
