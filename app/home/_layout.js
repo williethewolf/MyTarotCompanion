@@ -1,21 +1,27 @@
-import { View, Text,TouchableOpacity, StyleSheet } from 'react-native'
-import React from 'react'
+import React, {useState} from 'react'
 import { Stack } from 'expo-router'
-import HamburgerMenu from '../../components/HamburgerMenu'
+import HamburgerMenuButton from '../../components/HamburgerMenuButton'
+import HamburgerDrawer from '../../components/HamburgerDrawer'
 import StyledTitle from '../../components/StyledTitle'
 import NavigationMenuButton from '../../components/NavigationMenuButton'
 import { PieMenuProvider } from '../../Context';
-import PieMenuOverlay from '../../components/PieMenuOverlay'
 
 const StackLayouts = () => {
+  const [isDrawerOpen, setDrawerOpen] = useState(false);
+
+  const toggleDrawer = () => {
+    setDrawerOpen(!isDrawerOpen);
+  };
+
   return (
     <PieMenuProvider>
-      {/* Render PieMenuOverlay */}
+    {/* Render Hamburger drawer */}
+    <HamburgerDrawer isOpen={isDrawerOpen} onClose={() => setDrawerOpen(false)} />
     <Stack 
       screenOptions={({ navigation }) => ({
           headerTitle: () => <StyledTitle navigation={navigation} />,
           headerTitleAlign: 'center',
-          headerRight: () => <HamburgerMenu />,
+          headerRight: () => <HamburgerMenuButton onPress={toggleDrawer}/>,
           headerLeft: () => (
            <NavigationMenuButton />
           ),
