@@ -1,15 +1,18 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, StyleSheet, Button } from 'react-native';
+import { View, Text, TextInput, StyleSheet, Button,} from 'react-native';
 import { signInUser } from '../../components/auth';
-import { Link } from 'expo-router';
+import { Link, useNavigation } from 'expo-router';
+import { isTablet, scaleSize } from '../../utils/ResponsiveSizes'
 
 const LoginScreen = ({ navigation }) => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
 
+    const navigation = useNavigation();
+
     const handleLogin = () => {
         signInUser(email, password)
-            .then(() => navigation.navigate('Home'))
+            .then(() => navigation.navigate('../home/Dashboard'))
             .catch(error => console.log(error));
     };
 
@@ -21,9 +24,10 @@ const LoginScreen = ({ navigation }) => {
                 <View style={styles.buttonContainer}>
                     <Button title="Log In" onPress={handleLogin} color="#c4ae7e" />
                 </View>
-                <View style={styles.buttonContainer}>
-                    <Button title="Don't have an account? Sign Up" onPress={() => navigation.navigate('SignUp')} color="#c4ae7e" />
-                </View>
+                <Text>Don't have an account yet?</Text>
+                <Link href="../auth/SignupScreen" asChild>
+                <Button title="Sign Up" color="#c4ae7e" />
+                </Link>
             </View>
             {/* Development Link */}
             <Link href="../home/Dashboard" style={styles.devLink}>
@@ -52,6 +56,8 @@ const styles = StyleSheet.create({
         shadowOpacity: 0.25,
         shadowRadius: 3.84,
         elevation: 5,
+        width:'80%',
+        maxWidth:scaleSize(350),
     },
     input: {
         marginBottom: 10,
