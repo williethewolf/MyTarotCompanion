@@ -350,7 +350,7 @@ const NameInputSection = ({ onContinue, isVisible }) => {
   </Animated.Text>
   <DisplayPickedDateTime date={date} time={time} timeUnknown={timeUnknown} />
   <Animated.Text style={[styles.fadeInText, { opacity: textFadeAnim2, marginHorizontal:scaleSize(30), fontSize: scaleSize(15) }]}>
-    If you don't know the exact time, check the box and we will try our best to approximate.
+    If you don't know the exact time, check the box and we will try our best to approximate it.
   </Animated.Text>
   <Animated.View style={{ opacity: fadeAnim, flexDirection: 'column', alignItems: 'center' }}>
     <View style={{ flexDirection: 'row', justifyContent: 'space-around', width: scaleSize(300) }}>
