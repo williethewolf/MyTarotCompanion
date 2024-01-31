@@ -5,11 +5,10 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text, Button } from 'react-native';
 import { Link, useNavigation } from 'expo-router';
-import { Link,  } from 'expo-router';
 import firebase from '../firebaseConfig';
 import auth from '../firebaseConfig';
 
-const FirstScreen = ({ navigation }) => {
+const FirstScreen = () => {
     const [loading, setLoading] = useState(true);
 
     const navigation = useNavigation();
