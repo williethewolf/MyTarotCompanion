@@ -45,8 +45,9 @@ const HamburgerDrawer = ({ isOpen, onClose }) => {
         <Text style={styles.text}>Legal</Text>
     </View>
 
-    <View style={[styles.textContainer,{alignItems: 'flex-end', marginTop:scaleSize(20), textAlign: 'right'}]}>
+    <View style={[styles.textContainer,{alignItems: 'flex-end', marginVertical:scaleSize(16), textAlign: 'right', }]}>
         <Text style={styles.text}>Log Out</Text>
+        <Text> </Text>
     </View>
 </Animated.View>
   );
